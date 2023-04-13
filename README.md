@@ -10,5 +10,6 @@ WIP
 - [x] Google Colab to Run and Inference Dolly 2.0
 - [ ] Google Colab to Fine-Tune Dolly 2.0 on a New Dataset
 - [ ] Evaluation Metrics of LLMs
+- [ ] Reinforcement Learning with Human Feedback (RLHF)
 - [ ] Deployment Challenges of LLMs
 - [ ] Why build your own custom model vs. GPT-4?
