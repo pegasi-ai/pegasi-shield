@@ -6,9 +6,9 @@ Resources for running, fine-tuning, and inferencing Dolly 2.0
 3. [DataBricks Blog post](https://www.databricks.com/blog/2023/04/12/dolly-first-open-commercially-viable-instruction-tuned-llm)
 4. [`databricks-dolly-15k`](https://github.com/databrickslabs/dolly/tree/master/data)
 
-WIP
-- [x] Google Colab to Run and Inference Dolly 2.0
-- [ ] Google Colab to Fine-Tune Dolly 2.0 on a New Dataset
+WIP - Each with a seperate Colab Notebook
+- [x] Colab Notebook to Run and Inference Dolly 2.0
+- [ ] Colab Notebook to Fine-Tune Dolly 2.0 on a New Dataset
 - [ ] Fine-tuning Dolly for Specific Use Cases
 - [ ] Evaluation Metrics of LLMs
 - [ ] Reinforcement Learning with Human Feedback (RLHF)
