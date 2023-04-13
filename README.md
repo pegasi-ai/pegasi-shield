@@ -1,4 +1,4 @@
-# Dolly-2.0
+# Dolly 2.0 Guide
 Resources for running, fine-tuning, and inferencing Dolly 2.0
 
 [Dolly 2.0 Update Video on YouTube](https://www.youtube.com/watch?v=5sNJpRgZh-s&ab_channel=GenerativeAIEntrepreneurs)
