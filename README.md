@@ -13,3 +13,4 @@ WIP
 - [ ] Google Colab to Fine-Tune Dolly
 - [ ] Evaluation Metrics of LLMs
 - [ ] Deployment Challenges of LLMs
+- [ ] Why build your own custom model vs. GPT-4?
