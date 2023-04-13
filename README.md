@@ -10,7 +10,7 @@ Resources for running, fine-tuning, and inferencing Dolly 2.0
 
 WIP
 - [x] Google Colab to Run and Inference Dolly 2.0
-- [ ] Google Colab to Fine-Tune Dolly
+- [ ] Google Colab to Fine-Tune Dolly 2.0 on new dataset
 - [ ] Evaluation Metrics of LLMs
 - [ ] Deployment Challenges of LLMs
 - [ ] Why build your own custom model vs. GPT-4?
