@@ -2,7 +2,7 @@
 Resources for running, fine-tuning, and inferencing Dolly 2.0
 
 04/14/23 Update:
-1. [Colab Notebook: Fine-tuning Dolly 2.0 with LoRa and Alpaca](https://colab.research.google.com/drive/1n5U13L0Bzhs32QO_bls5jwuZR62GPSwE?usp=sharing)
+1. [Fine-tuning Dolly 2.0 Colab Notebook](https://colab.research.google.com/drive/1n5U13L0Bzhs32QO_bls5jwuZR62GPSwE?usp=sharing)
 
 04/12/23 Update:
 1. [Dolly 2.0 Update Video on YouTube](https://www.youtube.com/watch?v=5sNJpRgZh-s&ab_channel=GenerativeAIEntrepreneurs)
