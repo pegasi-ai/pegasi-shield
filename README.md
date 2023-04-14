@@ -1,7 +1,5 @@
 # Dolly 2.0 Series
-Resources for running, fine-tuning, and inferencing Dolly 2.0
-
-## CHANGELOG
+Democratizing resources for running, fine-tuning, and inferencing Dolly 2.0. Changelog below:
 
 04/14/23 Update:
 1. [Fine-tuning Dolly with LoRa 2.0 Colab Notebook](https://colab.research.google.com/drive/1n5U13L0Bzhs32QO_bls5jwuZR62GPSwE?usp=sharing)
