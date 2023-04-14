@@ -13,8 +13,10 @@ Resources for running, fine-tuning, and inferencing Dolly 2.0
 
 WIP - Each with a seperate Colab Notebook
 - [x] Colab Notebook to Run and Inference Dolly 2.0
-- [ ] Colab Notebook to Fine-Tune Dolly 2.0 on a New Dataset
+- [x] Colab Notebook to Fine-Tune Dolly 2.0 on Alpaca
+- [ ] Colab Notebook on Fine-Tuning on LAION's Dataset
 - [ ] Fine-tuning Dolly for Specific Use Cases
 - [ ] Evaluation Metrics of LLMs
 - [ ] Reinforcement Learning with Human Feedback (RLHF)
+- [ ] Generative Agents
 - [ ] Deployment Challenges of LLMs
