@@ -2,7 +2,7 @@
 Democratizing resources for running, fine-tuning, and inferencing Dolly 2.0. Changelog below:
 
 06/09/23 Update:
-Working on releasing developer tools here for evaluating LLMs off HuggingFace for effectiveness, robustness, and custom eval metrics. Stay tuned.
+1. Working on releasing developer tools here for evaluating LLMs off HuggingFace for effectiveness, robustness, and custom eval metrics. Stay tuned.
 
 04/14/23 Update:
 1. [Fine-tuning Dolly with LoRA 2.0 Colab Notebook](https://colab.research.google.com/drive/1n5U13L0Bzhs32QO_bls5jwuZR62GPSwE?usp=sharing)
