@@ -1,5 +1,5 @@
 # Dolly 2.0 Series
-Democratizing resources for running, fine-tuning, and inferencing Dolly 2.0. Changelog below:
+Democratizing resources for fine-tuning, inferencing, and evaluating Dolly 2.0. Changelog below:
 
 06/09/23 Update:
 1. Working on releasing developer tools here for evaluating LLMs off HuggingFace for effectiveness, robustness, and custom eval metrics. Stay tuned.
