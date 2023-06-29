@@ -1,6 +1,6 @@
 # Guardrail ML
 
-![plot](./static/images/guardrail_pic.png)
+![plot](./static/images/guardrail_img.png)
 
 Guardrail ML is an open-source LLM toolkit for evaluating, benchmarking, and monitoring language models. We will be providing examples with Dolly 2.0, which can be swapped for other HuggingFace models, to democratize fine-tuning, evaluating, and safeguarding LLMs.
 
