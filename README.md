@@ -1,4 +1,4 @@
-# Guardrail ML
+l # Guardrail ML
 
 ![plot](./static/images/guardrail_img.png)
 
@@ -22,13 +22,10 @@ Guardrail ML is an open-source LLM toolkit for evaluating, benchmarking, and mon
 3. [DataBricks Blog post](https://www.databricks.com/blog/2023/04/12/dolly-first-open-commercially-viable-instruction-tuned-llm)
 4. [`databricks-dolly-15k`](https://github.com/databrickslabs/dolly/tree/master/data)
 
-
-WIP - Each with a seperate Colab Notebook
+Roadmap - Each with a seperate Colab Notebook Example
 - [x] Colab Notebook to Run and Inference Dolly 2.0
 - [x] Colab Notebook to Fine-Tune Dolly 2.0 on Alpaca
-- [ ] Colab Notebook on Fine-Tuning on LAION's Dataset
-- [ ] Fine-tuning Dolly for Specific Use Cases
+- [ ] v0.01 release of guardrail-ml via $pip install
+- [ ] Evaluating and Benchmarking LLMs example 
 - [ ] Evaluation Metrics of LLMs
-- [ ] Reinforcement Learning with Human Feedback (RLHF)
-- [ ] Generative Agents
-- [ ] Deployment Challenges of LLMs
+- [ ] Dataset creation on documents via evolve-instruct
