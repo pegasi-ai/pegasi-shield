@@ -1,4 +1,4 @@
-l # Guardrail ML
+# Guardrail ML
 
 ![plot](./static/images/guardrail_img.png)
 
