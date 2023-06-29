@@ -29,3 +29,5 @@ Roadmap - Each with a seperate Colab Notebook Example
 - [ ] Evaluating and Benchmarking LLMs example 
 - [ ] Evaluation Metrics of LLMs
 - [ ] Dataset creation on documents via evolve-instruct
+- [ ] Prompt monitoring
+- [ ] Redteaming LLMs
