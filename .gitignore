@@ -1,4 +1,6 @@
 ./guardrailmlenv
+*./guardrailmlenv
+*./guardrailmlenv/share
 logs.db 
 .logs.db
 

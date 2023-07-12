@@ -1,11 +1,33 @@
-# Guardrail ML 
+# Guardrail ML
 
-Guardrail is an open-source toolkit for building domain-specific language models with confidence. From domain-specific dataset creation and custom evaluations to safeguarding and redteaming aligned with policies, our tools accelerates your LLM workflows to systematically derisk deployment.
+![plot](./static/images/guardrail_img.png)
 
-Guardrail ML:
-1. Transforms unstructured data into JSON for fine-tuning LLMs (SFT)
-2. Evaluates LLMs I/O for performance and across domain-specific tasks
-3. Benchmarks LLMs across your experiments and open-source 
-4. Safeguard your LLMs with aligned guardrails 
-5. Redteam your LLMs with prompt pertubations
+Guardrail ML is an open-source LLM toolkit for evaluating, benchmarking, and monitoring language models. We will be providing examples with Dolly 2.0, which can be swapped for other HuggingFace models, to democratize fine-tuning, evaluating, and safeguarding LLMs.
 
+## Changelog below:
+
+06/29/23 Update:
+1. We are working hard behind the scenes to release a v0.01 version in the coming weeks with accompanying Google Colab notebooks and YouTube video.
+2. Upon popular request, we will work towards a tutorial on how to leverage unstructured data for fine-tuning LLMs
+
+06/09/23 Update:
+1. Working on releasing developer tools here for evaluating LLMs off HuggingFace for effectiveness, robustness, and custom eval metrics. Stay tuned.
+
+04/14/23 Update:
+1. [Fine-tuning Dolly with LoRA 2.0 Colab Notebook](https://colab.research.google.com/drive/1n5U13L0Bzhs32QO_bls5jwuZR62GPSwE?usp=sharing)
+
+04/12/23 Update:
+1. [Dolly 2.0 Update Video on YouTube](https://www.youtube.com/watch?v=5sNJpRgZh-s&ab_channel=GenerativeAIEntrepreneurs)
+2. [Dolly 2.0 Google Colab (Modified for Colab Free)](https://colab.research.google.com/drive/1A8Prplbjr16hy9eGfWd3-r34FOuccB2c?usp=sharing)
+3. [DataBricks Blog post](https://www.databricks.com/blog/2023/04/12/dolly-first-open-commercially-viable-instruction-tuned-llm)
+4. [`databricks-dolly-15k`](https://github.com/databrickslabs/dolly/tree/master/data)
+
+Roadmap - Each with a seperate Colab Notebook Example
+- [x] Colab Notebook to Run and Inference Dolly 2.0
+- [x] Colab Notebook to Fine-Tune Dolly 2.0 on Alpaca
+- [ ] v0.01 release of guardrail-ml via $pip install
+- [ ] Evaluating and Benchmarking LLMs example 
+- [ ] Evaluation Metrics of LLMs
+- [ ] Dataset creation on documents via evolve-instruct
+- [ ] Prompt monitoring
+- [ ] Redteaming LLMs
