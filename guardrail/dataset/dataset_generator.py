@@ -56,34 +56,6 @@ class DatasetGenerator:
                         "answer": {"type": "string"},
                     }
                 },
-                "qa_pair2": {
-                    "type": "object",
-                    "properties": {
-                        "question": {"type": "string"},
-                        "answer": {"type": "string"},
-                    }
-                },
-                "qa_pair3": {
-                    "type": "object",
-                    "properties": {
-                        "question": {"type": "string"},
-                        "answer": {"type": "string"},
-                    }
-                },
-                "qa_pair4": {
-                    "type": "object",
-                    "properties": {
-                        "question": {"type": "string"},
-                        "answer": {"type": "string"},
-                    }
-                },
-                "qa_pair5": {
-                    "type": "object",
-                    "properties": {
-                        "question": {"type": "string"},
-                        "answer": {"type": "string"},
-                    }
-                }
             }
         }
         self.file_path = file_path
@@ -133,19 +105,18 @@ class DatasetGenerator:
 
         ### Instruction:
         Heed the following rules:
-        - Generate five highly contextual prompts and answer pairs from the following context
-        - Each question must increasingly be more sophisticated and complex
+        - Generate a highly contextual question and answer pair from the following context
         - Only return values that are explicitly mentioned in the text and match one of the provided options in the schema.
-        - For each question, triple check that it is a valid question ending with ?
-        - For each answer, only output answers that can be reference in the follwing text context. 
+        - For each answer, only output answers that can be referenced in the following context. 
+        - Avoid leading questions, or questions with the answer explicitly in them
 
-        You are an API that converts bodies of text into five (5x) unique question and answer pairs into a JSON format 
+        You are an API that converts bodies of text into a unique question and answer pairs into a JSON format 
         from the following text, while sticking to the aforementioned rules:
         """
         INPUT_KEY = "Context:"
         RESPONSE_KEY = "category=closed_qa"
 
-        prompt_schema = "Generate five different question and answer pairs sticking to the aforementioned rules and based on the following schema"
+        prompt_schema = "Generate a different question and answer pair sticking to the aforementioned rules and based on the following schema"
         prompt_full = """{intro}
         {instruction}
         {response_key}
@@ -187,7 +158,7 @@ class DatasetGenerator:
                     "question": question,
                     "answer": answer
                 })
-        return json.dumps(qa_pairs)
+        return json.dumps(qa_pairs, indent=4)
 
     def validate_json(self, json_data):
         """Validates that the given JSON data is valid JSON.
@@ -210,5 +181,6 @@ class DatasetGenerator:
             json_data: The JSON data to be saved.
             filename: The filename to save the JSON data to.
         """
-        with open(filename, "w") as f:
-            json.dump(json_data.strip('"'), f)
+        # Writing to sample.json
+        with open(filename, "w") as outfile:
+            outfile.write(json_data)

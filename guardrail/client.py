@@ -12,6 +12,7 @@ from .metrics.toxicity import Toxicity
 from .metrics.relevance import Relevance
 from .metrics.injections import PromptInjection
 from .metrics.sentiment import Sentiment
+from .metrics.bias import Bias
 
 from .dataset.dataset_generator import DatasetGenerator
 from .db import insert_log
@@ -45,6 +46,7 @@ def run_metrics(text, prompt=None, model_id=-1):
     relevance = Relevance()
     injection = PromptInjection()
     sentiment = Sentiment()
+    bias = Bias()
 
     # Configure logging
     logging.basicConfig(level=logging.INFO)
@@ -52,12 +54,13 @@ def run_metrics(text, prompt=None, model_id=-1):
 
     results = {}
     ts_results = textstat.evaluate(text)
-    toxicity_results = toxicity.evaluate(text)
     sentiment_results = sentiment.evaluate(text)
+    bias_results = bias.evaluate(text)
 
     if prompt:
         relevance_results = relevance.evaluate(text, prompt)
         injection_results = injection.evaluate(prompt)
+        toxicity_results = toxicity.evaluate(text, prompt)
 
     for result in ts_results:
         try:
@@ -71,9 +74,10 @@ def run_metrics(text, prompt=None, model_id=-1):
 
     insert_log("toxicity", toxicity_results, model_id)
 
-    results["textstat"] = ts_results
+    results["text_quality"] = ts_results
     results["toxicity"] = toxicity_results
     results["sentiment"] = sentiment_results
+    results["bias"] = bias_results
 
     if relevance_results: results["relevance"] = relevance_results
     if injection_results: results["prompt_injection"] = injection_results

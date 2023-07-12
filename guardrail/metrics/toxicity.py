@@ -3,11 +3,18 @@ from transformers import AutoTokenizer, AutoModelForSequenceClassification
 
 class Toxicity:
     def __init__(self):
-        self.tokenizer = AutoTokenizer.from_pretrained("martin-ha/toxic-comment-model")
-        self.model = AutoModelForSequenceClassification.from_pretrained("martin-ha/toxic-comment-model")
+        self.tokenizer = AutoTokenizer.from_pretrained("nicholasKluge/ToxicityModel")
+        self.model = AutoModelForSequenceClassification.from_pretrained("nicholasKluge/ToxicityModel")
+        self.model.eval()
 
-    def evaluate(self, text):
-        inputs = self.tokenizer(text, return_tensors="pt")
+    def evaluate(self, response, prompt):
+        inputs = self.tokenizer(prompt, 
+                                response,
+                                truncation=True,
+                                return_token_type_ids=False,
+                                return_attention_mask=True,
+                                return_tensors="pt")
         outputs = self.model(**inputs)
-        probabilities = torch.softmax(outputs.logits, dim=1)
-        return probabilities[0, 1].item()
+        score = self.model(**inputs)[0]
+        # probabilities = torch.softmax(score.logits, dim=0)
+        return score.item()

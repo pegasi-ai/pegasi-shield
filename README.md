@@ -25,7 +25,8 @@ Guardrail ML is an open-source LLM toolkit for evaluating, benchmarking, and mon
 Roadmap - Each with a seperate Colab Notebook Example
 - [x] Colab Notebook to Run and Inference Dolly 2.0
 - [x] Colab Notebook to Fine-Tune Dolly 2.0 on Alpaca
-- [ ] v0.01 release of guardrail-ml via $pip install
+- [ ] v0.0.01 release of guardrail-ml via $pip install
+- [x] Colab Notebook for Quickstart with Guardrail-ML 
 - [ ] Evaluating and Benchmarking LLMs example 
 - [ ] Evaluation Metrics of LLMs
 - [ ] Dataset creation on documents via evolve-instruct
