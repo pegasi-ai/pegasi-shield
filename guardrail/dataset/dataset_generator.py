@@ -22,6 +22,8 @@ class DatasetGenerator:
             file_path: str,
             output_path: str,
              *,
+            model = "databricks/dolly-v2-2-8b",
+            tokenizer = "databricks/dolly-v2-2-8b",
             debug: bool = False,
             max_array_length: int = 256,
             max_number_tokens: int = 64,
@@ -29,12 +31,12 @@ class DatasetGenerator:
             max_string_token_length: int = 1024
             ):
         
-        self.tokenizer = AutoTokenizer.from_pretrained("databricks/dolly-v2-2-8b",
+        self.tokenizer = AutoTokenizer.from_pretrained(model,
                                           padding_side="left",
                                           use_fast=True,
                                           max_length=1024,
                                           use_cache=True)        
-        self.model = AutoModelForCausalLM.from_pretrained("databricks/dolly-v2-2-8b",
+        self.model = AutoModelForCausalLM.from_pretrained(tokenizer,
                                              device_map="auto",
                                              torch_dtype=torch.bfloat16,
                                              use_cache=True)
