@@ -4,7 +4,20 @@
 
 Guardrail ML is an open-source LLM toolkit for evaluating, benchmarking, and monitoring language models. We will be providing examples with Dolly 2.0, which can be swapped for other HuggingFace models, to democratize fine-tuning, evaluating, and safeguarding LLMs.
 
+
+## Quickstart 
+[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/1KCn1HIeD3fQy8ecT74yHa3xgJZvdNvqL?usp=sharing)
+
+Get started with the below tasks in minutes via a free colab instance: 
+1. Evaluate LLM outputs/prompts for Text Quality, Toxicity, Bias, Relevance, Sentiment, Prompt Injection, etc.
+2. Generate JSON Question & Answer dataset from PDF leveraging LLMs
+
 ## Changelog below:
+
+07/12/23 Update:
+1. Easily evaluate your LLMs
+2. Generate JSON dataset via Dolly (Beta)
+3. Quickstart Colab
 
 06/29/23 Update:
 1. We are working hard behind the scenes to release a v0.01 version in the coming weeks with accompanying Google Colab notebooks and YouTube video.
@@ -25,7 +38,8 @@ Guardrail ML is an open-source LLM toolkit for evaluating, benchmarking, and mon
 Roadmap - Each with a seperate Colab Notebook Example
 - [x] Colab Notebook to Run and Inference Dolly 2.0
 - [x] Colab Notebook to Fine-Tune Dolly 2.0 on Alpaca
-- [ ] v0.01 release of guardrail-ml via $pip install
+- [ ] v0.0.01 release of guardrail-ml via $pip install
+- [x] Colab Notebook for Quickstart with Guardrail-ML 
 - [ ] Evaluating and Benchmarking LLMs example 
 - [ ] Evaluation Metrics of LLMs
 - [ ] Dataset creation on documents via evolve-instruct
