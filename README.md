@@ -11,6 +11,7 @@ Guardrail ML is an open-source LLM toolkit for evaluating, benchmarking, and mon
 Get started with the below tasks in minutes via a free colab instance: 
 1. Evaluate LLM outputs/prompts for Text Quality, Toxicity, Bias, Relevance, Sentiment, Prompt Injection, etc.
 2. Generate JSON Question & Answer dataset from PDF leveraging LLMs
+3. Log evaluation metrics to improve performance and auditing
 
 ## Changelog below:
 
