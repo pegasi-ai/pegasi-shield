@@ -24,14 +24,14 @@ class DatasetGenerator:
         *,
         model="OpenAssistant/falcon-7b-sft-mix-2000",
         tokenizer="OpenAssistant/falcon-7b-sft-mix-2000b",
-        load_4bit=True,
+        load_in_4bit=True,
         debug: bool = False,
         max_array_length: int = 256,
         max_number_tokens: int = 64,
         temperature: float = 0.3,
         max_string_token_length: int = 1024,
     ):
-        if load_4bit:
+        if load_in_4bit:
             print("Loading in 4bit...")
             bnb_config = BitsAndBytesConfig(
                 load_in_4bit=True,
@@ -125,7 +125,7 @@ class DatasetGenerator:
                 print("Size of array: ", len(qa_pairs_arr))
         return qa_pairs_arr
 
-    def generate_prompt(input):
+    def generate_prompt(self, input):
         prompt_intro = "Below is an instruction that describes a task. Write a response that appropriately completes the request."
         prompt_instruction = """
 
