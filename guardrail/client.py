@@ -92,14 +92,17 @@ def run_metrics(output, prompt, model_uri):
         insert_log(model_uri, prompt, output, "prompt_injection", injection_results)
     return results
 
-def create_dataset(file_path, model, tokenizer, output_path="./output.json", load_in_4bit=True, temperature=0.3):
+
+def create_dataset(
+    file_path, model, tokenizer, output_path="./output.json", load_in_4bit=True, temperature=0.3
+):
     dc = DatasetGenerator(
         file_path=file_path,
         model=model,
         tokenizer=tokenizer,
         output_path=output_path,
         load_in_4bit=load_in_4bit,
-        temperature=temperature
+        temperature=temperature,
     )
     dc.generate_dataset()
 
