@@ -28,7 +28,7 @@ class DatasetGenerator:
         debug: bool = False,
         max_array_length: int = 256,
         max_number_tokens: int = 64,
-        temperature: float = 0.7,
+        temperature: float = 0.3,
         max_string_token_length: int = 1024,
     ):
         if load_4bit:
@@ -125,18 +125,18 @@ class DatasetGenerator:
                 print("Size of array: ", len(qa_pairs_arr))
         return qa_pairs_arr
 
-    def generate_prompt(self, input):
+    def generate_prompt(input):
         prompt_intro = "Below is an instruction that describes a task. Write a response that appropriately completes the request."
         prompt_instruction = """
 
         ### Instruction:
         Heed the following rules:
-        - Generate three (3x) highly contextual question and answer pairs from the following context
-        - Only return values that are explicitly mentioned in the text and match one of the provided options in the schema.
-        - For each answer, only output answers that can be referenced in the following context. 
+        - Generate a highly contextual question and answer pairs from the following context
         - Avoid leading questions, or questions with the answer explicitly in them
+        - Each question must be unique with no duplicates
+        - For each answer, only output answers that can be explicitly referenced in the following context.
 
-        You are an API that converts bodies of text into a unique question and answer pairs into a JSON format 
+        You are an API that converts bodies of text into a unique question and answer pairs into a JSON format
         from the following text, while sticking to the aforementioned rules:
         """
         INPUT_KEY = "Context:"
