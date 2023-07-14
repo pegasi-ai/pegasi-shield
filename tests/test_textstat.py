@@ -1,8 +1,8 @@
 import unittest
-from guardrail.metrics import textstat 
+from guardrail.metrics import textstat
+
 
 class TestTextStat(unittest.TestCase):
-
     test_data = (
         "Playing games has always been thought to be important to "
         "the development of well-balanced and creative children; "
@@ -17,5 +17,6 @@ class TestTextStat(unittest.TestCase):
 
     def test_automated_readability_index(self):
         self.assertEqual(textstat.aggregate_reading_level(self.test_data), 15.5)
+
 
 unittest.main()

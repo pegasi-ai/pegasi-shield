@@ -1,6 +1,7 @@
 import torch
 from transformers import AutoTokenizer, AutoModelForSequenceClassification
 
+
 class Sentiment:
     def __init__(self, model_name="textattack/bert-base-uncased-imdb"):
         self.tokenizer = AutoTokenizer.from_pretrained(model_name)

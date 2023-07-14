@@ -1,9 +1,13 @@
 # Guardrail ML
+[![License](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
+[![Python 3.7+](https://img.shields.io/badge/python-3.7+-blue.svg)](https://www.python.org/downloads/release/python-370/)
+[![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
 
 ![plot](./static/images/guardrail_img.png)
 
-Guardrail ML is an open-source LLM toolkit for evaluating, benchmarking, and monitoring language models. We will be providing examples with Dolly 2.0, which can be swapped for other HuggingFace models, to democratize fine-tuning, evaluating, and safeguarding LLMs.
+Guardrail ML is an open-source toolkit for fine-tuning and deploying powerful, safe, and customized large language models. 
 
+Our toolkit accelerates the time-to-production of custom LLMs by transforming unstructured data to `.json` for fine-tuning and capturing responsible AI metrics of outputs/prompts to mitigate risks and improve performance. 
 
 ## Quickstart 
 [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/1KCn1HIeD3fQy8ecT74yHa3xgJZvdNvqL?usp=sharing)
@@ -13,36 +17,50 @@ Get started with the below tasks in minutes via a free colab instance:
 2. Generate JSON Question & Answer dataset from PDF leveraging LLMs
 3. Log evaluation metrics to improve performance and auditing
 
-## Changelog below:
+## Installation 💻
 
-07/12/23 Update:
-1. Easily evaluate your LLMs
-2. Generate JSON dataset via Dolly (Beta)
-3. Quickstart Colab
+To install guardrail-ml, use the Python Package Index (PyPI) as follows:
 
-06/29/23 Update:
-1. We are working hard behind the scenes to release a v0.01 version in the coming weeks with accompanying Google Colab notebooks and YouTube video.
-2. Upon popular request, we will work towards a tutorial on how to leverage unstructured data for fine-tuning LLMs
+```
+pip install guardrail-ml
+```
 
-06/09/23 Update:
-1. Working on releasing developer tools here for evaluating LLMs off HuggingFace for effectiveness, robustness, and custom eval metrics. Stay tuned.
+## Features
+Guardrail ML supports the following `metrics` and logs them:
+- Toxicity & Bias
+- Text Quality
+- Text Relevance
+- Privacy
+- Sentiment
 
-04/14/23 Update:
-1. [Fine-tuning Dolly with LoRA 2.0 Colab Notebook](https://colab.research.google.com/drive/1n5U13L0Bzhs32QO_bls5jwuZR62GPSwE?usp=sharing)
+Guardrail ML can transform your data from:
+- PDFs into `.json` question & answer pairs
+- Uses `dolly-v2` as default to generate pairs
+- Leverage your huggingface models to generate pairs
 
-04/12/23 Update:
-1. [Dolly 2.0 Update Video on YouTube](https://www.youtube.com/watch?v=5sNJpRgZh-s&ab_channel=GenerativeAIEntrepreneurs)
-2. [Dolly 2.0 Google Colab (Modified for Colab Free)](https://colab.research.google.com/drive/1A8Prplbjr16hy9eGfWd3-r34FOuccB2c?usp=sharing)
-3. [DataBricks Blog post](https://www.databricks.com/blog/2023/04/12/dolly-first-open-commercially-viable-instruction-tuned-llm)
-4. [`databricks-dolly-15k`](https://github.com/databrickslabs/dolly/tree/master/data)
+View logs in `streamlit` dashboard
+- Locally deployed dashboard to view metrics
+- Be used for auditing  benchmarking experiments
 
-Roadmap - Each with a seperate Colab Notebook Example
-- [x] Colab Notebook to Run and Inference Dolly 2.0
-- [x] Colab Notebook to Fine-Tune Dolly 2.0 on Alpaca
-- [ ] v0.0.01 release of guardrail-ml via $pip install
-- [x] Colab Notebook for Quickstart with Guardrail-ML 
-- [ ] Evaluating and Benchmarking LLMs example 
-- [ ] Evaluation Metrics of LLMs
-- [ ] Dataset creation on documents via evolve-instruct
-- [ ] Prompt monitoring
-- [ ] Redteaming LLMs
+## Usage
+```python
+from guardrail.client import run_metrics
+from guardrail.client import run_simple_metrics
+from guardrail.client import create_dataset
+
+# Output/Prompt Metrics
+run_metrics(output="Guardrail is an open-source toolkit for building domain-specific language models with confidence. From domain-specific dataset creation and custom     evaluations to safeguarding and redteaming aligned with policies, our tools accelerates your LLM workflows to systematically derisk deployment.",
+            prompt="What is guardrail-ml?",
+            model_uri="dolly-v2-0.01")
+
+# View Logs
+con = sqlite3.connect("logs.db")
+df = pd.read_sql_query("SELECT * from logs", con)
+df.tail(20)
+
+# Generate Dataset from PDF
+create_dataset(model="databricks/dolly-v2-2-8b",
+               tokenizer="databricks/dolly-v2-2-8b",
+               file_path="example-docs/Medicare Appeals Paper FINAL.pdf",
+               output_path="./output.json")
+```

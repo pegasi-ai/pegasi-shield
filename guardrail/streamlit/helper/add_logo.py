@@ -3,11 +3,9 @@ import base64
 import pkg_resources
 import streamlit as st
 
+
 def add_logo():
-    logo = open(
-        pkg_resources.resource_filename('helper', 'guardrail_logo.svg'),
-        "rb"
-    ).read()
+    logo = open(pkg_resources.resource_filename("helper", "guardrail_logo.svg"), "rb").read()
     logo_encoded = base64.b64encode(logo).decode()
 
     st.markdown(
