@@ -59,10 +59,11 @@ df = pd.read_sql_query("SELECT * from logs", con)
 df.tail(20)
 
 # Generate Dataset from PDF
-create_dataset(model="databricks/dolly-v2-2-8b",
-               tokenizer="databricks/dolly-v2-2-8b",
+create_dataset(model="OpenAssistant/falcon-7b-sft-mix-2000",
+               tokenizer="OpenAssistant/falcon-7b-sft-mix-2000",
                file_path="example-docs/Medicare Appeals Paper FINAL.pdf",
-               output_path="./output.json")
+               output_path="./output.json",
+               load_in_4bit=True)
 ```
 
 ## More Colab Notebooks
