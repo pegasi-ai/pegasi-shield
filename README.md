@@ -64,3 +64,8 @@ create_dataset(model="databricks/dolly-v2-2-8b",
                file_path="example-docs/Medicare Appeals Paper FINAL.pdf",
                output_path="./output.json")
 ```
+
+## More Colab Notebooks
+Fine-Tuning Dolly 2.0 with LoRA: [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/1n5U13L0Bzhs32QO_bls5jwuZR62GPSwE?usp=sharing)
+
+Inferencing Dolly 2.0: [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/1A8Prplbjr16hy9eGfWd3-r34FOuccB2c?usp=sharing)

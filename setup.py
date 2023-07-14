@@ -6,7 +6,8 @@ with open("README.md", "r", encoding="utf-8") as fh:
 
 setuptools.setup(
     name="guardrail-ml",
-    version="0.0.545",
+    version="0.0.1-alpha",
+
     packages=find_packages(exclude=["tests", "guardrailmlev", "examples", "docs", "env", "dist"]),
     author="Kevin Wu",
     author_email="kevin@guardrailml.com",
