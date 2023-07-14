@@ -4,7 +4,7 @@ import csv
 
 from typing import List, Union, Dict, Any
 
-from transformers import PreTrainedModel, PreTrainedTokenizer
+from transformers import PreTrainedModel, PreTrainedTokenizer, BitsAndBytesConfig
 import torch
 from transformers import AutoModelForCausalLM, AutoTokenizer, pipeline
 
@@ -22,20 +22,33 @@ class DatasetGenerator:
         file_path: str,
         output_path: str,
         *,
-        model="databricks/dolly-v2-2-8b",
-        tokenizer="databricks/dolly-v2-2-8b",
+        model="OpenAssistant/falcon-7b-sft-mix-2000",
+        tokenizer="OpenAssistant/falcon-7b-sft-mix-2000b",
+        load_4bit=True,
         debug: bool = False,
         max_array_length: int = 256,
         max_number_tokens: int = 64,
-        temperature: float = 0.3,
+        temperature: float = 0.7,
         max_string_token_length: int = 1024,
     ):
-        self.tokenizer = AutoTokenizer.from_pretrained(
-            model, padding_side="left", use_fast=True, max_length=1024, use_cache=True
-        )
-        self.model = AutoModelForCausalLM.from_pretrained(
-            tokenizer, device_map="auto", torch_dtype=torch.bfloat16, use_cache=True
-        )
+        if load_4bit:
+            print("Loading in 4bit...")
+            bnb_config = BitsAndBytesConfig(
+                load_in_4bit=True,
+                bnb_4bit_quant_type="nf4",
+                bnb_4bit_compute_dtype=torch.float16,
+            )
+            self.model = AutoModelForCausalLM.from_pretrained(
+                model, quantization_config=bnb_config, trust_remote_code=True
+            )
+            self.tokenizer = AutoTokenizer.from_pretrained(model)
+        else:
+            self.tokenizer = AutoTokenizer.from_pretrained(
+                model, padding_side="left", use_fast=True, max_length=1024, use_cache=True
+            )
+            self.model = AutoModelForCausalLM.from_pretrained(
+                tokenizer, device_map="auto", torch_dtype=torch.bfloat16, use_cache=True
+            )
         self.max_array_length = max_array_length
         self.max_number_tokens = max_number_tokens
         self.temperature = temperature
@@ -48,6 +61,20 @@ class DatasetGenerator:
             "type": "object",
             "properties": {
                 "qa_pair1": {
+                    "type": "object",
+                    "properties": {
+                        "question": {"type": "string"},
+                        "answer": {"type": "string"},
+                    },
+                },
+                "qa_pair2": {
+                    "type": "object",
+                    "properties": {
+                        "question": {"type": "string"},
+                        "answer": {"type": "string"},
+                    },
+                },
+                "qa_pair3": {
                     "type": "object",
                     "properties": {
                         "question": {"type": "string"},
@@ -104,7 +131,7 @@ class DatasetGenerator:
 
         ### Instruction:
         Heed the following rules:
-        - Generate a highly contextual question and answer pair from the following context
+        - Generate three (3x) highly contextual question and answer pairs from the following context
         - Only return values that are explicitly mentioned in the text and match one of the provided options in the schema.
         - For each answer, only output answers that can be referenced in the following context. 
         - Avoid leading questions, or questions with the answer explicitly in them
