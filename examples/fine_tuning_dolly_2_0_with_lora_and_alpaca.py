@@ -13,6 +13,7 @@ Original file is located at
 *   Alpaca Cleaned Dataset - https://github.com/gururise/AlpacaDataCleaned
 """
 
+"""
 !git clone https://github.com/gururise/AlpacaDataCleaned.git
 
 ls AlpacaDataCleaned/
@@ -21,6 +22,8 @@ ls AlpacaDataCleaned/
 !pip install -q datasets loralib sentencepiece
 !pip -q install git+https://github.com/huggingface/peft.git
 !pip -q install bitsandbytes
+
+"""
 
 # Create Instruct Pipeline
 import logging
