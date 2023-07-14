@@ -93,9 +93,13 @@ def run_metrics(output, prompt, model_uri):
     return results
 
 
-def create_dataset(file_path, model, tokenizer, output_path="./output.json"):
+def create_dataset(file_path, model, tokenizer, output_path="./output.json", load_in_4bit=True, temperature=0.7):
     dc = DatasetGenerator(
-        file_path=file_path, model=model, tokenizer=tokenizer, output_path=output_path
+        file_path=file_path,
+        model=model,
+        tokenizer=tokenizer,
+        output_path=output_path,
+        load_in_4bit=load_in_4bit,
     )
     dc.generate_dataset()
 
