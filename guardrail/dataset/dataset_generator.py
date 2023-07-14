@@ -4,7 +4,7 @@ import csv
 
 from typing import List, Union, Dict, Any
 
-from transformers import PreTrainedModel, PreTrainedTokenizer
+from transformers import PreTrainedModel, PreTrainedTokenizer, BitsAndBytesConfig
 import torch
 from transformers import AutoModelForCausalLM, AutoTokenizer, pipeline
 
@@ -15,31 +15,40 @@ from unstructured.partition.auto import partition
 from unstructured.documents.elements import NarrativeText
 from unstructured.partition.text_type import sentence_count
 
+
 class DatasetGenerator:
- 
     def __init__(
-            self,    
-            file_path: str,
-            output_path: str,
-             *,
-            model = "databricks/dolly-v2-2-8b",
-            tokenizer = "databricks/dolly-v2-2-8b",
-            debug: bool = False,
-            max_array_length: int = 256,
-            max_number_tokens: int = 64,
-            temperature: float = 0.3,
-            max_string_token_length: int = 1024
-            ):
-        
-        self.tokenizer = AutoTokenizer.from_pretrained(model,
-                                          padding_side="left",
-                                          use_fast=True,
-                                          max_length=1024,
-                                          use_cache=True)        
-        self.model = AutoModelForCausalLM.from_pretrained(tokenizer,
-                                             device_map="auto",
-                                             torch_dtype=torch.bfloat16,
-                                             use_cache=True)
+        self,
+        file_path: str,
+        output_path: str,
+        *,
+        model="OpenAssistant/falcon-7b-sft-mix-2000",
+        tokenizer="OpenAssistant/falcon-7b-sft-mix-2000b",
+        load_4bit=True,
+        debug: bool = False,
+        max_array_length: int = 256,
+        max_number_tokens: int = 64,
+        temperature: float = 0.7,
+        max_string_token_length: int = 1024,
+    ):
+        if load_4bit:
+            print("Loading in 4bit...")
+            bnb_config = BitsAndBytesConfig(
+                load_in_4bit=True,
+                bnb_4bit_quant_type="nf4",
+                bnb_4bit_compute_dtype=torch.float16,
+            )
+            self.model = AutoModelForCausalLM.from_pretrained(
+                model, quantization_config=bnb_config, trust_remote_code=True
+            )
+            self.tokenizer = AutoTokenizer.from_pretrained(model)
+        else:
+            self.tokenizer = AutoTokenizer.from_pretrained(
+                model, padding_side="left", use_fast=True, max_length=1024, use_cache=True
+            )
+            self.model = AutoModelForCausalLM.from_pretrained(
+                tokenizer, device_map="auto", torch_dtype=torch.bfloat16, use_cache=True
+            )
         self.max_array_length = max_array_length
         self.max_number_tokens = max_number_tokens
         self.temperature = temperature
@@ -56,20 +65,34 @@ class DatasetGenerator:
                     "properties": {
                         "question": {"type": "string"},
                         "answer": {"type": "string"},
-                    }
+                    },
                 },
-            }
+                "qa_pair2": {
+                    "type": "object",
+                    "properties": {
+                        "question": {"type": "string"},
+                        "answer": {"type": "string"},
+                    },
+                },
+                "qa_pair3": {
+                    "type": "object",
+                    "properties": {
+                        "question": {"type": "string"},
+                        "answer": {"type": "string"},
+                    },
+                },
+            },
         }
         self.file_path = file_path
         self.output_path = output_path
-    
+
     def generate_dataset(self):
         results = self.partition_file(self.file_path)
         qa_pairs = self.generate_pairs(results)
         json_output = self.convert_json(qa_pairs)
         self.validate_json(json_output)
         self.save_json(json_output, self.output_path)
-    
+
     def partition_file(self, file_path):
         results = []
         if file_path:
@@ -79,7 +102,7 @@ class DatasetGenerator:
                 if isinstance(element, NarrativeText) and sentence_count(element.text) > 1:
                     results.append(element.text)
         return results
-    
+
     def generate_pairs(self, results):
         qa_pairs_arr = []
         print(len(results))
@@ -87,27 +110,28 @@ class DatasetGenerator:
             for text in results:
                 prompt = self.generate_prompt(text)
                 builder = Jsonformer(
-                            model=self.model,
-                            tokenizer=self.tokenizer,
-                            json_schema=self.json_schema,
-                            prompt=prompt,
-                            max_string_token_length=self.max_string_token_length,
-                            max_array_length=self.max_array_length,
-                            max_number_tokens=self.max_number_tokens,
-                            temperature=self.temperature)
+                    model=self.model,
+                    tokenizer=self.tokenizer,
+                    json_schema=self.json_schema,
+                    prompt=prompt,
+                    max_string_token_length=self.max_string_token_length,
+                    max_array_length=self.max_array_length,
+                    max_number_tokens=self.max_number_tokens,
+                    temperature=self.temperature,
+                )
                 output = builder()
                 qa_pairs_arr.append(output)
                 print(output)
                 print("Size of array: ", len(qa_pairs_arr))
         return qa_pairs_arr
-    
+
     def generate_prompt(self, input):
         prompt_intro = "Below is an instruction that describes a task. Write a response that appropriately completes the request."
         prompt_instruction = """
 
         ### Instruction:
         Heed the following rules:
-        - Generate a highly contextual question and answer pair from the following context
+        - Generate three (3x) highly contextual question and answer pairs from the following context
         - Only return values that are explicitly mentioned in the text and match one of the provided options in the schema.
         - For each answer, only output answers that can be referenced in the following context. 
         - Avoid leading questions, or questions with the answer explicitly in them
@@ -133,10 +157,10 @@ class DatasetGenerator:
             input_key=INPUT_KEY,
             input=input,
             response_key=RESPONSE_KEY,
-            schema=prompt_schema)
+            schema=prompt_schema,
+        )
         return prompt_full
 
-    
     def convert_json(self, json_data):
         """Converts the given JSON data into a single JSON output with just the question and answer pairs as objects.
 
@@ -156,10 +180,7 @@ class DatasetGenerator:
                 question = re.sub(r"[^\w\s,.!?]", "", question)
                 answer = re.sub(r"[^\w\s,.!?]", "", answer)
 
-                qa_pairs.append({
-                    "question": question,
-                    "answer": answer
-                })
+                qa_pairs.append({"question": question, "answer": answer})
         return json.dumps(qa_pairs, indent=4)
 
     def validate_json(self, json_data):

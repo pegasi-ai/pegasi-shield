@@ -7,8 +7,8 @@ Original file is located at
     https://colab.research.google.com/drive/1A8Prplbjr16hy9eGfWd3-r34FOuccB2c
 """
 
-!pip -q install git+https://github.com/huggingface/transformers # need to install from github
-!pip -q install accelerate>=0.12.0
+# !pip -q install git+https://github.com/huggingface/transformers # need to install from github
+# !pip -q install accelerate>=0.12.0
 
 import torch
 from transformers import pipeline

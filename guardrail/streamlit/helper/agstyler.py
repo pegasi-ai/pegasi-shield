@@ -16,27 +16,26 @@ PINLEFT = {"pinned": "left"}
 
 
 def draw_grid(
-        df,
-        formatter: dict = None,
-        selection="multiple",
-        use_checkbox=False,
-        fit_columns=False,
-        theme="streamlit",
-        max_height: int = MAX_TABLE_HEIGHT,
-        wrap_text: bool = False,
-        auto_height: bool = False,
-        grid_options: dict = None,
-        key=None,
-        css: dict = None
+    df,
+    formatter: dict = None,
+    selection="multiple",
+    use_checkbox=False,
+    fit_columns=False,
+    theme="streamlit",
+    max_height: int = MAX_TABLE_HEIGHT,
+    wrap_text: bool = False,
+    auto_height: bool = False,
+    grid_options: dict = None,
+    key=None,
+    css: dict = None,
 ):
-
     gb = GridOptionsBuilder()
     gb.configure_default_column(
         filterable=True,
         groupable=False,
         editable=False,
         wrapText=wrap_text,
-        autoHeight=auto_height
+        autoHeight=auto_height,
     )
 
     if grid_options is not None:
@@ -56,7 +55,7 @@ def draw_grid(
         height=max(max_height, (1 + len(df.index)) * 29),
         theme=theme,
         key=key,
-        custom_css=css
+        custom_css=css,
     )
 
 

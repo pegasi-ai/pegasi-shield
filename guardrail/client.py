@@ -17,6 +17,7 @@ from .metrics.bias import Bias
 from .dataset.dataset_generator import DatasetGenerator
 from .db import insert_log
 
+
 def run_simple_metrics(output, prompt, model_uri):
     # Initialize the Textstat class
     textstat = Textstat()
@@ -35,6 +36,7 @@ def run_simple_metrics(output, prompt, model_uri):
             logger.error(f"Error while inserting {result_name} into DB: {e}")
 
     return ts_eval_results
+
 
 def run_metrics(output, prompt, model_uri):
     # Initialize the metrics classes
@@ -63,41 +65,49 @@ def run_metrics(output, prompt, model_uri):
     for result_name in ts_results:
         try:
             # Insert log into the database
-            insert_log(model_uri, prompt, output, "tq_" + str(result_name), ts_results[result_name])
+            insert_log(
+                model_uri,
+                prompt,
+                output,
+                "tq_" + str(result_name),
+                ts_results[result_name],
+            )
         except Exception as e:
             logger.error(f"Error while inserting {result_name} into DB: {e}")
 
     insert_log(model_uri, prompt, output, "toxicity", toxicity_results)
     insert_log(model_uri, prompt, output, "sentiment", sentiment_results)
-    insert_log(model_uri, prompt, output, "bias_label", bias_results[0]['label'])
-    insert_log(model_uri, prompt, output, "bias_score", bias_results[0]['score'])
+    insert_log(model_uri, prompt, output, "bias_label", bias_results[0]["label"])
+    insert_log(model_uri, prompt, output, "bias_score", bias_results[0]["score"])
 
     results["toxicity"] = toxicity_results
     results["sentiment"] = sentiment_results
     results["bias"] = bias_results
 
-    if relevance_results: 
+    if relevance_results:
         results["relevance"] = relevance_results
         insert_log(model_uri, prompt, output, "relevance", relevance_results)
-    if injection_results: 
+    if injection_results:
         results["prompt_injection"] = injection_results
         insert_log(model_uri, prompt, output, "prompt_injection", injection_results)
     return results
 
-def create_dataset(file_path, 
-                   model, 
-                   tokenizer, 
-                   output_path="./output.json"):
-    dc = DatasetGenerator(file_path=file_path, 
-                          model=model,
-                          tokenizer=tokenizer,
-                          output_path=output_path)
+def create_dataset(file_path, model, tokenizer, output_path="./output.json", load_in_4bit=True, temperature=0.7):
+    dc = DatasetGenerator(
+        file_path=file_path,
+        model=model,
+        tokenizer=tokenizer,
+        output_path=output_path,
+        load_in_4bit=load_in_4bit,
+    )
     dc.generate_dataset()
+
 
 def init_logs():
     # Create a database connection and table for logs
     conn = sqlite3.connect("logs.db")
-    conn.execute("""
+    conn.execute(
+        """
         CREATE TABLE IF NOT EXISTS logs (
             timestamp TEXT,
             model_uri TEXT,
@@ -106,8 +116,10 @@ def init_logs():
             metric_name TEXT,
             metric_value TEXT
         );
-    """)
+    """
+    )
     conn.close()
+
 
 # Initialize the database
 init_logs()
