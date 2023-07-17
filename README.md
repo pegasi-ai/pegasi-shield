@@ -14,7 +14,7 @@ Our toolkit accelerates the time-to-production of custom LLMs by transforming un
 
 Get started with the below in minutes via a free colab instance: 
 1. Automated Evaluations of LLM for Text Quality, Toxicity, Bias, Relevance, Sentiment, Prompt Injection, etc.
-2. Easy Generations of JSON Q&A dataset from your data (PDFs) via open-source LLMs for supervised fine-tuning (SFT)
+2. Simple Generation of JSON-formatted Q&A dataset from your data (PDFs) via open-source LLMs for fine-tuning (SFT)
 3. Auditable Logs of evaluation metrics for observability, benchmarking, and compliance
 
 ## Installation 💻
