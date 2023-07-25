@@ -12,10 +12,10 @@ Our toolkit accelerates the time-to-production of custom LLMs by transforming un
 ## Quickstart 
 [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/1KCn1HIeD3fQy8ecT74yHa3xgJZvdNvqL?usp=sharing)
 
-Get started with the below tasks in minutes via a free colab instance: 
-1. Evaluate LLM outputs/prompts for Text Quality, Toxicity, Bias, Relevance, Sentiment, Prompt Injection, etc.
-2. Generate JSON Question & Answer dataset from PDF leveraging LLMs
-3. Log evaluation metrics to improve performance and auditing
+Get started with the below in minutes via a free colab instance: 
+1. Automated Evaluations of LLM for Text Quality, Toxicity, Bias, Relevance, Sentiment, Prompt Injection, etc.
+2. Simple Generation of JSON-formatted Q&A dataset from your data (PDFs) via open-source LLMs for fine-tuning (SFT)
+3. Auditable Logs of evaluation metrics for observability, benchmarking, and compliance
 
 ## Installation 💻
 
@@ -59,10 +59,11 @@ df = pd.read_sql_query("SELECT * from logs", con)
 df.tail(20)
 
 # Generate Dataset from PDF
-create_dataset(model="databricks/dolly-v2-2-8b",
-               tokenizer="databricks/dolly-v2-2-8b",
+create_dataset(model="OpenAssistant/falcon-7b-sft-mix-2000",
+               tokenizer="OpenAssistant/falcon-7b-sft-mix-2000",
                file_path="example-docs/Medicare Appeals Paper FINAL.pdf",
-               output_path="./output.json")
+               output_path="./output.json",
+               load_in_4bit=True)
 ```
 
 ## More Colab Notebooks
