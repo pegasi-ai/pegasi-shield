@@ -32,5 +32,7 @@ setuptools.setup(
         "pillow",
         "jsonformer",
         "scipy",
+        "pydantic",
+        "tenacity"
     ],
 )

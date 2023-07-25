@@ -14,6 +14,11 @@ from .metrics.injections import PromptInjection
 from .metrics.sentiment import Sentiment
 from .metrics.bias import Bias
 
+from .guardrail.guardchain.chain.chain import Chain
+from .guardrail.guardchain.memory.buffer_memory import BufferMemory
+from .guardrail.guardchain.models.base_model import BaseLanguageModel
+from .guardrail.guardchain.agent.chat_agent import ChatAgent
+
 from .dataset.dataset_generator import DatasetGenerator
 from .db import insert_log
 
@@ -123,7 +128,6 @@ def init_logs():
     """
     )
     conn.close()
-
 
 # Initialize the database
 init_logs()
