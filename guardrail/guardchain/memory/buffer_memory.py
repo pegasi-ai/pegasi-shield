@@ -1,18 +1,15 @@
-from typing import Any, Optional
+from typing import Any, Optional, Dict
+
+from pydantic import BaseModel, Field
 
 from guardrail.guardchain.agent.message import ChatMessageHistory, MessageType
 from guardrail.guardchain.memory.base import BaseMemory
 
-from pydantic import BaseModel
-
-BaseModel.model_config['protected_namespaces'] = ()
-
-class BufferMemory(BaseMemory):
+class BufferMemory(BaseMemory, BaseModel):
     """Buffer for storing conversation memory and an in-memory kv store."""
 
-    def __init__(self):
-        self.conversation_history = ChatMessageHistory()
-        self.kv_memory = {}
+    conversation_history: ChatMessageHistory = Field(default_factory=ChatMessageHistory)
+    kv_memory: Dict[str, Any] = Field(default_factory=dict)
 
     def load_memory(
         self, key: Optional[str] = None, default: Optional[Any] = None, **kwargs
@@ -41,4 +38,7 @@ class BufferMemory(BaseMemory):
     def clear(self) -> None:
         """Clear memory contents."""
         self.conversation_history.clear()
-       
+
+    class Config:
+        # Set the `allow_extra` attribute to True to disable validation of extra fields
+        allow_extra = True

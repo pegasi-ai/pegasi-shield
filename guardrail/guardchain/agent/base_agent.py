@@ -29,15 +29,15 @@ class JSONPromptTemplate(BaseModel):
 
     template: Template
     """The prompt template."""
+    
+    class Config:
+        """Configuration for this pydantic object."""
+        extra = Extra.forbid
+        arbitrary_types_allowed = True
+        validate_assignment = False  # Turn off Pydantic validation errors
 
     input_variables: List[str]
     """A list of the names of the variables the prompt template expects."""
-
-    class Config:
-        """Configuration for this pydantic object."""
-
-        extra = Extra.forbid
-        arbitrary_types_allowed = True
 
     def format_prompt(self, **kwargs: Any) -> List[BaseMessage]:
         variables = {v: "" for v in self.input_variables}
@@ -50,6 +50,12 @@ class BaseAgent(BaseModel, ABC):
     output_parser: AgentOutputParser = None
     llm: BaseLanguageModel = None
     tools: Sequence[Tool] = []
+
+    class Config:
+        """Configuration for this pydantic object."""
+        extra = Extra.forbid
+        arbitrary_types_allowed = True
+        validate_assignment = False  # Turn off Pydantic validation errors
 
     @classmethod
     def from_llm_and_tools(
@@ -138,19 +144,20 @@ class BaseAgent(BaseModel, ABC):
 
 
 class ConvoJSONOutputParser(AgentOutputParser):
-    def parse(self, message: BaseMessage) -> Union[AgentAction, AgentFinish]:
+    def parse(self, message: BaseMessage, tool_names) -> Union[AgentAction, AgentFinish]:
         response = self.load_json_output(message)
 
         action_name = response.get("tool", {}).get("name")
         action_args = response.get("tool", {}).get("args")
 
         if (
-            "no" in response.get("thoughts", {}).get("need_use_tool").lower().strip()
+            not response.get("thoughts", {}).get("need_use_tool")
             or not action_name
+            or action_name not in tool_names
         ):
-            output_message = response.get("response")
+            output_message = response.get("response").get("ai_response")
             if output_message:
-                return AgentFinish(message=response.get("response"), log=output_message)
+                return AgentFinish(message=output_message, log=output_message)
             else:
                 return AgentFinish(message="Sorry, I don't understand", log=output_message)
 

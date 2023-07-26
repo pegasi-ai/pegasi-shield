@@ -51,23 +51,13 @@ class AgentOutputParser(BaseModel):
         """If the message contains a json response, try to parse it into dictionary"""
         text = message.content
         clean_text = ""
-
+        
         try:
             clean_text = text[text.index("{") : text.rindex("}") + 1].strip()
             response = json.loads(clean_text)
+            print("Response: ", response)
         except Exception:
-            llm = BaseLanguageModel("OpenAssistant/falcon-7b-sft-mix-2000")
-            message = [
-                UserMessage(
-                    content=f"""Fix the following json into correct format
-                                ```json
-                                {clean_text}
-                                ```
-                            """
-                )
-            ]
-            full_output: Generation = llm.generate(message).generations[0]
-            response = json.loads(full_output.message.content)
+            response = text
 
         return response
 

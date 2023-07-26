@@ -1,5 +1,5 @@
 import enum
-from typing import List, Any, Dict
+from typing import List, Any, Dict, Optional
 
 from pydantic import BaseModel, Field
 
@@ -15,16 +15,18 @@ class BaseMessage(BaseModel):
     """Message object."""
 
     content: str
-    additional_kwargs: dict = Field(default_factory=dict)
+    additional_kwargs: Optional[Dict[str, Any]] = None  # Use Optional with default None
 
     @property
     def type(self) -> str:
         """Type of the message, used for serialization."""
+        raise NotImplementedError("Subclasses must implement this property.")
 
 
 class UserMessage(BaseMessage):
     """Type of message that is spoken by the human."""
 
+    content: str  # Ensure that content is defined with type str
     example: bool = False
 
     @property

@@ -1,9 +1,7 @@
 import logging
-import json 
 from abc import abstractmethod
 from typing import Any, Callable, Dict, List, Optional, Tuple, Union
 import torch
-from colorama import Fore
 
 from pydantic import Extra, Field, BaseModel, PrivateAttr
 from tenacity import (
@@ -13,14 +11,10 @@ from tenacity import (
     stop_after_attempt,
     wait_exponential,
 )
-from transformers import pipeline, AutoTokenizer, AutoModelForCausalLM
+from transformers import LlamaTokenizer, LlamaForCausalLM
 
-from guardrail.guardchain.agent.message import BaseMessage, AIMessage
+from guardrail.guardchain.agent.message import BaseMessage
 from guardrail.guardchain.tools.base_tool import Tool
-
-from guardrail.guardchain.utils import print_with_color
-
-from guardrail.guardchain.models.jsonformer import Jsonformer
 
 logger = logging.getLogger(__name__)
 
@@ -68,36 +62,27 @@ class BaseLanguageModel():
     """What sampling temperature to use."""
     model_kwargs: Dict[str, Any] = None
     """Holds any model parameters valid for `generate` call not explicitly specified."""
-
-    tokenizer_kwargs: Dict[str, Any] = None
-    
     request_timeout: Optional[Union[float, Tuple[float, float]]] = None
     """Timeout for requests to completion API. Default is 600 seconds."""
     max_retries: int = 6
     """Maximum number of retries to make when generating."""
     n: int = 1
     """Number of completions to generate for each prompt."""
-    max_tokens: Optional[int] = 512
+    max_tokens: Optional[int] = None
     """Maximum number of tokens to generate."""
     max_length: int = 512
     """Tokenizer maximum length."""
-    truncation: bool = True
+    truncation: bool = False
     """Tokenizer truncation"""
-    padding: bool = True 
+    padding: bool = False 
     """Padding truncation"""
-    max_array_length: int = 64
-    max_number_tokens: int = 512
 
-    _tokenizer: Optional[AutoTokenizer] = Field(default=None)
-    """The AutoTokenizer instance for this model."""
+    _tokenizer: Optional[LlamaTokenizer] = Field(default=None)
+    """The LlamaTokenizer instance for this model."""
     
-    _model: Optional[AutoModelForCausalLM] = Field(default=None)
-    """The AutoModelForCausalLM instance for this model."""
+    _model: Optional[LlamaForCausalLM] = Field(default=None)
+    """The LlamaForCausalLM instance for this model."""
 
-    conversation_schema: json = {}
-
-    default_stop_tokens: List[str] = ["."]
-    
     def __init__(
         self,
         model_name: str = None,
@@ -106,8 +91,6 @@ class BaseLanguageModel():
         max_length: Optional[int] = None,
         truncation: Optional[bool] = None,
         padding: Optional[bool] = None,
-        max_array_length: Optional[int] = None,
-        max_number_tokens: Optional[int] = None,
         **kwargs: Any,
     ):
         super().__init__(**kwargs)
@@ -130,69 +113,22 @@ class BaseLanguageModel():
         if padding is not None:
             self.padding = padding
 
-        if self.model_kwargs is not None:
-            if torch.cuda.is_available():
-                self.model_kwargs["device_map"] = "auto"
-        else:
-            # Initialize self.model_kwargs as an empty dictionary and assign "device_map" value
-            self.model_kwargs = {}
-            if torch.cuda.is_available():
-                self.model_kwargs["device_map"] = "auto"
-
         # Initialize tokenizer and model here
-        if self.tokenizer_kwargs is not None:
-            self.tokenizer = AutoTokenizer.from_pretrained(
-                self.model_name, **self.tokenizer_kwargs
-            )
-        else:
-            self.tokenizer = AutoTokenizer.from_pretrained(self.model_name)
-        
+        self.tokenizer = LlamaTokenizer.from_pretrained(
+            self.model_name,
+            max_length=self.max_length,
+            truncation=self.truncation,
+            padding=self.padding,
+        )
         if self.model_kwargs is not None:
-            self.model = AutoModelForCausalLM.from_pretrained(
+            self.model = LlamaForCausalLM.from_pretrained(
                 self.model_name,
                 device_map=self.model_kwargs.get("device_map"),
                 quantization_config=self.model_kwargs.get("bnb_config"),
             )
         else: 
-            self.model = AutoModelForCausalLM.from_pretrained(self.model_name)
-        
-        self.agent_should_respond = {
-            "type": "object",
-            "properties": {
-                "ai_agent_should_respond": {"type": "boolean"}
-            },
-        }
+            self.model = LlamaForCausalLM.from_pretrained(self.model_name)
 
-        self.agent_planning = {
-            "type": "object",
-            "properties": {
-                "thoughts": {
-                    "type": "object",
-                    "properties": {
-                        "plan": {"type": "string"},
-                        "need_use_tool": {"type": "boolean"},
-                    },
-                },
-                "tool": {
-                    "type": "object",
-                    "properties": { 
-                        "name": {"type": "string"},
-                        "args": {
-                            "type": "object",
-                            "properties": {
-                                "arg_name": {"type": "string"}
-                            }
-                        }
-                    },
-                },
-                "response": {
-                    "type": "object",
-                    "properties": {
-                        "ai_response": {"type": "string"},
-                    },
-                },
-            },
-        }
 
     # Create properties for tokenizer and model so they can be accessed externally
     @property
@@ -218,28 +154,34 @@ class BaseLanguageModel():
         messages: List[BaseMessage],
         functions: Optional[List[Tool]] = None,
         stop: Optional[List[str]] = None,
-        planning: Optional[bool] = False
     ) -> LLMResult:
-        prompt = self._construct_prompt_from_message(messages)
-        print("Prompt:", prompt)
+        inputs = [msg.content for msg in messages]
 
-        if planning:
-            json_schema = self.agent_planning
-        else:
-            json_schema = self.agent_should_respond
+        # Encode the input text using the tokenizer
+        inputs_encoded = self.tokenizer(
+            inputs,
+            return_tensors="pt",
+            max_length=self.max_length,
+            truncation=self.truncation,
+            padding=self.padding,
+        )
 
-        generator = Jsonformer(
-                        model=self.model,
-                        tokenizer=self.tokenizer,
-                        json_schema=json_schema,
-                        prompt=prompt,
-                        max_string_token_length=self.max_length,
-                        max_array_length=self.max_array_length,
-                        max_number_tokens=self.max_number_tokens,
-                        temperature=self.temperature,
-                    )
-        generation = generator()
-        return self._create_llm_result(generation=generation, prompt=prompt, stop=stop, planning=planning)
+        # Generate text with the model
+        with torch.no_grad():
+            outputs = self.model.generate(
+                inputs_encoded.input_ids,
+                max_length=self.max_length,  # Set the maximum length of the generated text
+                num_return_sequences=self.n,  # Number of completions to generate for each prompt
+                temperature=self.temperature,  # Set the sampling temperature
+            )
+
+        generated_texts = self.tokenizer.batch_decode(outputs, skip_special_tokens=True)
+
+        # Create Generation objects for each generated text
+        generations = [Generation(message=BaseMessage(content=text)) for text in generated_texts]
+
+        # Return the result
+        return LLMResult(generations=generations)
 
     def encode(self, texts: List[str]) -> EmbeddingResult:
         # Tokenize the input texts using the tokenizer
@@ -302,70 +244,3 @@ class BaseLanguageModel():
             return self.model.generate(**kwargs)
 
         return _generate_with_retry(**kwargs)
-    
-    @staticmethod
-    def _construct_prompt_from_message(messages: List[BaseMessage]):
-        prompt = ""
-        for msg in messages:
-            prompt += msg.content
-        return prompt
-
-    @staticmethod
-    def _enforce_stop_tokens(text: str, stop: List[str]) -> str:
-        """Cut off the text as soon as any stop words occur."""
-        first_index = len(text)
-        for s in stop:
-            if s in text:
-                first_index = min(text.index(s), first_index)
-
-        return text[:first_index].strip()
-
-    def _create_llm_result(
-        self, generation: Any, prompt: str, stop: List[str], planning=False
-    ) -> LLMResult:
-        print("Generation: ", str(generation))
-        print("Planning: ", planning)
-        
-        if not planning:
-            ai_response = generation["ai_agent_should_respond"]
-            if ai_response: ai_response = "True"
-            else: ai_response = "False"
-        else: 
-            ai_response = json.dumps(generation)
-            
-        print("AI Response: ", ai_response)
-
-        return LLMResult(
-                generations=[Generation(message=AIMessage(content=ai_response))],
-                llm_output={
-                    "token_usage": len(str(generation).split()),
-                    "model_name": self.model_name,
-                },
-        )
-        """
-            
-
-        # text = generation[0]["generated_text"][len(prompt) :]
-        text = generation[0]["generated_text"][len(prompt) :]
-        print("Generated text: ", str(text))
-        print_with_color(str(text), Fore.GREEN)
-
-        if self.max_tokens:
-            token_ids = self.tokenizer.encode(text)[: self.max_tokens]
-            text = self.tokenizer.decode(token_ids)
-
-        # it is better to have a default stop token so model does not always generate to max
-        # sequence length
-        stop = stop or self.default_stop_tokens
-        print("Before enforce...", stop)
-        # json_output = self._enforce_stop_tokens(text=json_output, stop=stop)
-
-        return LLMResult(
-            generations=[Generation(message=AIMessage(content=text))],
-            llm_output={
-                "token_usage": len(text.split()),
-                "model_name": self.model_name,
-            },
-        )
-        """
-

@@ -1,4 +1,6 @@
 import logging
+import inspect
+import traceback
 from typing import Dict, Union
 
 from colorama import Fore
@@ -63,7 +65,13 @@ class Chain(BaseChain):
             if not self.handle_parsing_errors:
                 raise e
             tool_output = f"Invalid or incomplete response due to {e}"
+            traceback.print_exc()  # This will print the traceback with file name and line number.            
+
+            current_frame = inspect.currentframe()
+            line_number = current_frame.f_lineno
+            file_name = inspect.getfile(current_frame)
             print(tool_output)
+            print(f"File: {file_name}, Line: {line_number}, {tool_output}")
             output = AgentFinish(message=self.graceful_exit_tool.run(), log=tool_output)
             return output
 

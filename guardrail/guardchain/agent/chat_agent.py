@@ -73,7 +73,7 @@ class ChatAgent(BaseAgent):
         }
 
         def _parse_response(res: str):
-            if "yes" in res.lower():
+            if "False" in res:
                 return AgentFinish(
                     message="Thank you for contacting",
                     log="Thank you for contacting",
@@ -130,11 +130,14 @@ class ChatAgent(BaseAgent):
             **kwargs,
         }
         final_prompt = self.format_prompt(self.prompt_template, intermediate_steps, **inputs)
+        print_with_color("finish with tooling", Fore.CYAN)
         logger.info(f"\nPlanning Input: {final_prompt[0].content} \n")
-        full_output: Generation = self.llm.generate(final_prompt).generations[0]
+        full_output: Generation = self.llm.generate(final_prompt, planning=True).generations[0]
+        print("Full output", full_output)
         agent_output: Union[AgentAction, AgentFinish] = self.output_parser.parse(
-            full_output.message
+            full_output.message, tool_names
         )
+        print_with_color("done with tooling", Fore.CYAN)
 
         print(f"Planning output: \n{repr(full_output.message.content)}", Fore.YELLOW)
         if isinstance(agent_output, AgentAction):
@@ -165,6 +168,7 @@ class ChatAgent(BaseAgent):
                 template=CLARIFYING_QUESTION_PROMPT_TEMPLATE
             )
             final_prompt = self.format_prompt(clarifying_template, intermediate_steps, **inputs)
+            print("Final prompt: ", final_prompt)
             logger.info(f"\nClarification inputs: {final_prompt[0].content}")
             full_output: Generation = self.llm.generate(final_prompt).generations[0]
             print(f"Clarification outputs: {repr(full_output.message.content)}")

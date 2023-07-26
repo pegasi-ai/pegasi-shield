@@ -1,6 +1,8 @@
 from __future__ import annotations
 
-PLANNING_PROMPT_TEMPLATE = """You are an assistant who tries to have helpful conversation 
+PLANNING_PROMPT_TEMPLATE = """
+### Instruction
+You are an assistant who tries to have helpful conversation 
 with user based on previous conversation and previous tools outputs from tools. 
 ${prompt}
 Use tool when provided. If there is no tool available, respond with have a helpful and polite 
@@ -9,14 +11,8 @@ conversation. Find next step without using the same tool with same inputs.
 Assistant has access to the following tools:
 ${tools}
 
-Previous conversation so far:
-${history}
-
-Previous tools outputs:
-${agent_scratchpad}
-
-Please respond user question in JSON format as described below
-RESPONSE FORMAT:
+Please respond to the user's question/input from the previous conversation so far in the below JSON format with descriptions of each key as a guiding template and pompt. 
+RESPONSE FORMAT (DO NOT COPY, ONLY REFERENCE AS AN EXAMPLE):
 {
   "thoughts": {
     "plan": "Given previous tools outputs, what is the next step after the previous conversation",
@@ -28,19 +24,25 @@ RESPONSE FORMAT:
       "arg_name": "arg value from conversation history or tools outputs to run tool"
     }
   },
-  "response": "response to user given tools outputs and conversations",
+  "response": "assistant's response to user given tools outputs and conversations",
 }
+Previous tools outputs:
+${agent_scratchpad}
 
-Ensure the response can be parsed by Python json.loads
+### Input
+Previous conversation so far:
+${history}
+
+Generate based on the conversation so far and the following schema:
 """
 
-SHOULD_ANSWER_PROMPT_TEMPLATE = """You are a support agent. 
-Given the following conversation so far, has assistant finish helping user with all the 
+SHOULD_ANSWER_PROMPT_TEMPLATE = """You are an AI agent who helps out as much as you can. 
+Given the following conversation so far, has the assistant not finished helping the user with all the 
 questions?
-Answer with yes or no.
 
 Conversation:
 ${history}
+Generate based on above conversation, and the following schema.
 """
 
 FIX_TOOL_INPUT_PROMPT_TEMPLATE = """Tool have the following spec and input provided

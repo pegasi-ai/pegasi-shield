@@ -6,7 +6,7 @@ with open("README.md", "r", encoding="utf-8") as fh:
 
 setuptools.setup(
     name="guardrail-ml",
-    version="0.0.12",
+    version="0.0.5594",
     packages=find_packages(exclude=["tests", "guardrailmlev", "examples", "docs", "env", "dist"]),
     author="Kevin Wu",
     author_email="kevin@guardrailml.com",
@@ -33,6 +33,7 @@ setuptools.setup(
         "jsonformer",
         "scipy",
         "pydantic",
-        "tenacity"
+        "tenacity",
+        "colorama"
     ],
 )
