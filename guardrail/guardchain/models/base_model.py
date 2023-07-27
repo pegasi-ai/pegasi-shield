@@ -148,13 +148,14 @@ class BaseLanguageModel():
             self.tokenizer = AutoTokenizer.from_pretrained(self.model_name)
         
         if self.model_kwargs is not None:
+            kwargs = self.model_kwargs.copy()
             self.model = AutoModelForCausalLM.from_pretrained(
                 self.model_name,
-                device_map=self.model_kwargs.get("device_map"),
-                quantization_config=self.model_kwargs.get("bnb_config"),
+                **kwargs,
             )
         else: 
-            self.model = AutoModelForCausalLM.from_pretrained(self.model_name)
+            self.model = AutoModelForCausalLM.from_pretrained(self.model_name, 
+                                                              load_in_8bit=True)
         
         self.agent_should_respond = {
             "type": "object",
@@ -185,7 +186,7 @@ class BaseLanguageModel():
                         }
                     },
                 },
-                "response": {
+                "assistant": {
                     "type": "object",
                     "properties": {
                         "ai_response": {"type": "string"},

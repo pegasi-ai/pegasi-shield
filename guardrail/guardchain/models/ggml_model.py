@@ -1,7 +1,9 @@
 import logging
+import json 
 from abc import abstractmethod
 from typing import Any, Callable, Dict, List, Optional, Tuple, Union
 import torch
+from colorama import Fore
 
 from pydantic import Extra, Field, BaseModel, PrivateAttr
 from tenacity import (
@@ -11,10 +13,14 @@ from tenacity import (
     stop_after_attempt,
     wait_exponential,
 )
-from transformers import LlamaTokenizer, LlamaForCausalLM
+from ctransformers import AutoModelForCausalLM
 
-from guardrail.guardchain.agent.message import BaseMessage
+from guardrail.guardchain.agent.message import BaseMessage, AIMessage
 from guardrail.guardchain.tools.base_tool import Tool
+
+from guardrail.guardchain.utils import print_with_color
+
+from guardrail.guardchain.models.jsonformer import Jsonformer
 
 logger = logging.getLogger(__name__)
 
@@ -45,8 +51,7 @@ class EmbeddingResult(BaseModel):
     texts: List[str]
     embeddings: List[List[float]]
 
-
-class BaseLanguageModel():
+class GGMLHuggingFaceModel():
     """Wrapper around HuggingFace's Transformers language models.
 
     To use, you should have the `transformers` library installed, and the
@@ -56,8 +61,11 @@ class BaseLanguageModel():
     in, even if not explicitly saved on this class.
     """
 
-    model_name: str = "guardrail/llama-2-7b-guanaco-instruct-sharded"
+    model_name: str = "TheBloke/WizardLM-13B-V1.2-GGML"
     """Model name to use."""
+    model_file: str = "wizardlm-13b-v1.2.ggmlv3.q4_1.bin"
+    """GGML Model Bin File"""
+    gpu_layers: int = 50
     temperature: float = 0.7
     """What sampling temperature to use."""
     model_kwargs: Dict[str, Any] = None
@@ -70,22 +78,23 @@ class BaseLanguageModel():
     """Number of completions to generate for each prompt."""
     max_tokens: Optional[int] = None
     """Maximum number of tokens to generate."""
-    max_length: int = 512
+    max_length: int = 1024
     """Tokenizer maximum length."""
     truncation: bool = False
     """Tokenizer truncation"""
     padding: bool = False 
     """Padding truncation"""
-
-    _tokenizer: Optional[LlamaTokenizer] = Field(default=None)
-    """The LlamaTokenizer instance for this model."""
+    gpu_layers: int = 0
+    """GGML """
     
-    _model: Optional[LlamaForCausalLM] = Field(default=None)
+    _model: Optional[AutoModelForCausalLM] = Field(default=None)
     """The LlamaForCausalLM instance for this model."""
 
     def __init__(
         self,
         model_name: str = None,
+        model_file: str = None,
+        gpu_layers: int = None,
         temperature: Optional[float] = None,
         model_kwargs: Optional[Dict[str, Any]] = None,
         max_length: Optional[int] = None,
@@ -113,32 +122,19 @@ class BaseLanguageModel():
         if padding is not None:
             self.padding = padding
 
-        # Initialize tokenizer and model here
-        self.tokenizer = LlamaTokenizer.from_pretrained(
-            self.model_name,
-            max_length=self.max_length,
-            truncation=self.truncation,
-            padding=self.padding,
-        )
-        if self.model_kwargs is not None:
-            self.model = LlamaForCausalLM.from_pretrained(
+        if model_file is not None:
+            self.model_file = model_file
+        
+        if gpu_layers is not None:
+            self.gpu_layers = gpu_layers
+
+        print("Loading in GGML Model with GPU layers")
+
+        self.model = AutoModelForCausalLM.from_pretrained(
                 self.model_name,
-                device_map=self.model_kwargs.get("device_map"),
-                quantization_config=self.model_kwargs.get("bnb_config"),
-            )
-        else: 
-            self.model = LlamaForCausalLM.from_pretrained(self.model_name)
-
-
-    # Create properties for tokenizer and model so they can be accessed externally
-    @property
-    def tokenizer(self):
-        return self._tokenizer
-
-    @tokenizer.setter
-    def tokenizer(self, value):
-        # You can add custom logic here if needed
-        self._tokenizer = value
+                model_file=self.model_file,
+                gpu_layers=self.gpu_layers
+        )
 
     @property
     def model(self):
@@ -150,54 +146,26 @@ class BaseLanguageModel():
         self._model = value
         
     def generate(
-        self,
-        messages: List[BaseMessage],
-        functions: Optional[List[Tool]] = None,
-        stop: Optional[List[str]] = None,
-    ) -> LLMResult:
-        inputs = [msg.content for msg in messages]
+            self,
+            messages: List[BaseMessage],
+            functions: Optional[List[Tool]] = None,
+            stop: Optional[List[str]] = None,
+            planning: Optional[bool] = True
+        ) -> LLMResult:
+            prompt = self._construct_prompt_from_message(messages)
+            print("Prompt:", prompt)
 
-        # Encode the input text using the tokenizer
-        inputs_encoded = self.tokenizer(
-            inputs,
-            return_tensors="pt",
-            max_length=self.max_length,
-            truncation=self.truncation,
-            padding=self.padding,
-        )
-
-        # Generate text with the model
-        with torch.no_grad():
-            outputs = self.model.generate(
-                inputs_encoded.input_ids,
-                max_length=self.max_length,  # Set the maximum length of the generated text
-                num_return_sequences=self.n,  # Number of completions to generate for each prompt
-                temperature=self.temperature,  # Set the sampling temperature
-            )
-
-        generated_texts = self.tokenizer.batch_decode(outputs, skip_special_tokens=True)
-
-        # Create Generation objects for each generated text
-        generations = [Generation(message=BaseMessage(content=text)) for text in generated_texts]
-
-        # Return the result
-        return LLMResult(generations=generations)
-
-    def encode(self, texts: List[str]) -> EmbeddingResult:
-        # Tokenize the input texts using the tokenizer
-        inputs_encoded = self.tokenizer(
-            texts,
-            return_tensors="pt",
-            max_length=self.max_length,
-            truncation=self.truncation,
-            padding=self.padding,
-        )
-
-        # Generate embeddings with the model
-        with torch.no_grad():
-            embeddings = self.model.base_model(input_ids=inputs_encoded.input_ids).last_hidden_state
-
-        return EmbeddingResult(texts=texts, embeddings=embeddings.tolist())
+            # inputs = [msg.content for msg in messages]
+            # Concatenate the inputs into a single string
+            # concatenated_string = "".join(prompt)
+            # Remove leading and trailing whitespaces
+            # result = concatenated_string.strip()
+            
+            text = self.model(prompt)
+        
+            generation = [Generation(message=BaseMessage(content=text))]
+            # Return the result
+            return self._create_llm_result(generation=generation, prompt=prompt, stop=stop, planning=planning)
 
     class Config:
         """Configuration for this Pydantic object."""
@@ -244,3 +212,38 @@ class BaseLanguageModel():
             return self.model.generate(**kwargs)
 
         return _generate_with_retry(**kwargs)
+    
+    @staticmethod
+    def _construct_prompt_from_message(messages: List[BaseMessage]):
+        prompt = ""
+        for msg in messages:
+            prompt += msg.content
+        return prompt
+
+    @staticmethod
+    def _enforce_stop_tokens(text: str, stop: List[str]) -> str:
+        """Cut off the text as soon as any stop words occur."""
+        first_index = len(text)
+        for s in stop:
+            if s in text:
+                first_index = min(text.index(s), first_index)
+
+        return text[:first_index].strip()
+
+    def _create_llm_result(
+        self, generation: Any, prompt: str, stop: List[str], planning=False
+    ) -> LLMResult:
+        print("Generation: ", str(generation))
+        print("Planning: ", planning)
+         
+        ai_response = generation[0].message.content
+                  
+        print("AI Response: ", ai_response)
+
+        return LLMResult(
+                generations=[Generation(message=AIMessage(content=ai_response))],
+                llm_output={
+                    "token_usage": len(str(generation).split()),
+                    "model_name": self.model_name,
+                },
+        )

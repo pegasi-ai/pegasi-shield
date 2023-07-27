@@ -22,9 +22,9 @@ class Jsonformer:
         *,
         debug: bool = False,
         max_array_length: int = 10,
-        max_number_tokens: int = 512,
+        max_number_tokens: int = 1024,
         temperature: float = 0.7,
-        max_string_token_length: int = 512,
+        max_string_token_length: int = 1024,
         load_in_4bit = False,
     ):
         self.model = model

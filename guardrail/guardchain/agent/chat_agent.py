@@ -25,7 +25,7 @@ logger = logging.getLogger(__name__)
 
 class ChatAgent(BaseAgent):
     output_parser: ConvoJSONOutputParser = ConvoJSONOutputParser()
-    llm: BaseLanguageModel = None
+    llm: Any = None
     prompt_template: JSONPromptTemplate = None
     allowed_tools: Dict[str, Tool] = {}
     tools: List[Tool] = []
@@ -34,7 +34,7 @@ class ChatAgent(BaseAgent):
     @classmethod
     def from_llm_and_tools(
         cls,
-        llm: BaseLanguageModel,
+        llm: Any,
         tools: Optional[List[Tool]] = None,
         output_parser: Optional[ConvoJSONOutputParser] = None,
         prompt_template: str = PLANNING_PROMPT_TEMPLATE,
@@ -127,9 +127,11 @@ class ChatAgent(BaseAgent):
             "tools": tool_strings,
             "history": history.format_message(),
             "prompt": self.prompt,
+            "human_input": history.get_latest_user_message().content,
             **kwargs,
         }
         final_prompt = self.format_prompt(self.prompt_template, intermediate_steps, **inputs)
+        print("Final prompt: ", final_prompt)
         print_with_color("finish with tooling", Fore.CYAN)
         logger.info(f"\nPlanning Input: {final_prompt[0].content} \n")
         full_output: Generation = self.llm.generate(final_prompt, planning=True).generations[0]

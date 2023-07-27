@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import logging
+import json
 from abc import ABC, abstractmethod
 from typing import Any, List, Optional, Sequence, Union
 from string import Template
@@ -48,7 +49,7 @@ class JSONPromptTemplate(BaseModel):
 
 class BaseAgent(BaseModel, ABC):
     output_parser: AgentOutputParser = None
-    llm: BaseLanguageModel = None
+    llm: Any = None
     tools: Sequence[Tool] = []
 
     class Config:
@@ -60,7 +61,7 @@ class BaseAgent(BaseModel, ABC):
     @classmethod
     def from_llm_and_tools(
         cls,
-        llm: BaseLanguageModel,
+        llm: Any,
         tools: Sequence[Tool],
         prompt: str,
         output_parser: Optional[AgentOutputParser] = None,
@@ -143,9 +144,32 @@ class BaseAgent(BaseModel, ABC):
         pass
 
 
+
 class ConvoJSONOutputParser(AgentOutputParser):
+    def is_json(self, data):
+        try:
+            json.loads(data)
+            return True
+        except json.JSONDecodeError:
+            return False
+
+    def ensure_json(self, data):
+        if isinstance(data, dict):
+            # If data is already a dictionary (JSON object), return as it is
+            return data
+        elif self.is_json(data):
+            # If data is a valid JSON string, parse and return as a dictionary
+            return json.loads(data)
+        else:
+            raise ValueError("Data is not in valid JSON format.")
+        
     def parse(self, message: BaseMessage, tool_names) -> Union[AgentAction, AgentFinish]:
-        response = self.load_json_output(message)
+        if self.is_json(message.content):
+            response = message.content
+        else:
+            response = self.load_json_output(message)
+            if not self.is_json(response):
+                response = self.ensure_json(response)
 
         action_name = response.get("tool", {}).get("name")
         action_args = response.get("tool", {}).get("args")
@@ -155,7 +179,7 @@ class ConvoJSONOutputParser(AgentOutputParser):
             or not action_name
             or action_name not in tool_names
         ):
-            output_message = response.get("response").get("ai_response")
+            output_message = response.get("assistant").get("response")
             if output_message:
                 return AgentFinish(message=output_message, log=output_message)
             else:
