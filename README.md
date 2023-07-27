@@ -5,11 +5,10 @@
 
 ![plot](./static/images/guardrail_img.png)
 
-GuardChain is an open-source toolkit for fine-tuning and deploying powerful, safe, and customized large language models.
+GuardChain is an open-source toolkit for fine-tuning and deploying powerful, safe, and customized large language models. Behind the scenes, we're building an enterprise-grade LangChain alternative to scale responsible AI applications. Reach out to learn more. 
 
 Our toolkit accelerates the time-to-production of custom LLMs by transforming unstructured data to `.json` for fine-tuning and capturing responsible AI metrics of outputs/prompts to mitigate risks and improve performance. 
 
-Behind the scenes, we're building an enterprise-grade LangChain alternative to scale responsible AI applications.
 ## Quickstart 
 [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/1KCn1HIeD3fQy8ecT74yHa3xgJZvdNvqL?usp=sharing)
 
