@@ -73,7 +73,7 @@ Fine-Tuning Dolly 2.0 with LoRA: [![Open In Colab](https://colab.research.google
 
 Inferencing Dolly 2.0: [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/1A8Prplbjr16hy9eGfWd3-r34FOuccB2c?usp=sharing)
 
-### Related AI Papers:
+### Related AI Papers & Resources:
 - [Universal and Transferable Adversarial Attacks
 on Aligned Language Models](https://llm-attacks.org/zou2023universal.pdf)
 - [OWASP Top 10 for LLM](https://owasp.org/www-project-top-10-for-large-language-model-applications/assets/PDF/OWASP-Top-10-for-LLMs-2023-v09.pdf)
