@@ -76,3 +76,4 @@ Inferencing Dolly 2.0: [![Open In Colab](https://colab.research.google.com/asset
 ### Related AI Papers:
 - [Universal and Transferable Adversarial Attacks
 on Aligned Language Models](https://llm-attacks.org/zou2023universal.pdf)
+- [OWASP Top 10 for LLM](https://owasp.org/www-project-top-10-for-large-language-model-applications/assets/PDF/OWASP-Top-10-for-LLMs-2023-v09.pdf)
