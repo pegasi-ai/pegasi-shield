@@ -9,7 +9,7 @@ GuardChain is a lightweight toolkit that offer developers the ability to build c
 
 Building custom generative agents for production demands intensive customization, often becoming overwhelming when supporting various use cases with existing tools and frameworks. Consequently, the process of developing generative agents that are domain-specific, secure, and reliable remains daunting. Furthermore, evaluating these agents is labor-intensive and costly, relying on manually exploring different scenarios. 
 
-GuardChain's core aim is to tackle the above issues by providing developers with a lightweight and flexible framework to build their agents, automate evaluations of LLMs, and apply an LLM-specific Firewall.  We offer developers an extensible framework to build and launch responsible AI agents in production.
+GuardChain's aim is to tackle the above issues by providing developers with a lightweight and flexible framework to build their agents, automate evaluations of LLMs, and apply a Firewall to enforce LLM governance policies. We offer developers an extensible framework to build and launch responsible AI agents in production.
 
 ## Features
 - 🚀 lightweight and extensible generative agent pipeline with simple memory tracking
@@ -17,20 +17,16 @@ GuardChain's core aim is to tackle the above issues by providing developers with
 - 🤗 performant agents with ctransformers and GGML models as first-class citizens
 - 🛡️ self-hardening firewall to protect LLMs from adversarial attacks and enforce rules
 
-## Motivation
-
-
 ## Quickstart 
 [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/1KCn1HIeD3fQy8ecT74yHa3xgJZvdNvqL?usp=sharing)
 
 ## Installation 💻
 
-To install guardrail-ml, use the Python Package Index (PyPI) as follows:
+To install guarchain, use the Python Package Index (PyPI) as follows:
 
 ```
-pip install guardrail-ml
+pip install guardchain
 ```
-
 
 ## Usage
 ```python
