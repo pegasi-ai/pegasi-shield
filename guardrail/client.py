@@ -124,6 +124,5 @@ def init_logs():
     )
     conn.close()
 
-
 # Initialize the database
 init_logs()
