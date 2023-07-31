@@ -30,7 +30,7 @@ pip install guardchain
 ```
 
 ## Usage
-1. [Authenticate](http://useguardrail.com)
+1. [Authenticate - Get Free API Key](http://useguardrail.com)
 
 2. Build your agent
 ```python
