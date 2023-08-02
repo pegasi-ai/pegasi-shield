@@ -11,11 +11,12 @@ Building custom generative agents for production demands intensive customization
 
 GuardChain's aim is to tackle the above issues by providing developers with a lightweight and flexible framework to build their agents, automate evaluations of LLMs, and apply a Firewall to enforce LLM governance policies. We offer developers an extensible framework to build and launch responsible AI agents in production.
 
-## Features
+## Features 
 - 🚀 lightweight and extensible generative agent pipeline with simple memory tracking
 - 🤖 automated agent simulated conversations evaluation for domain-specific tasks
-- 🤗 performant agents with ctransformers and GGML models as first-class citizens
 - 🛡️ self-hardening firewall to protect LLMs from adversarial attacks and enforce rules
+- 🛠️ text metrics and logging toolkit for quality, relevance, toxicity, bias and more
+- 🤗 performant agents with ctransformers and GGML models as first-class citizens
 
 ## Quickstart 
 [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/1KCn1HIeD3fQy8ecT74yHa3xgJZvdNvqL?usp=sharing)
