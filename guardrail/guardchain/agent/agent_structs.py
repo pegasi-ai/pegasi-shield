@@ -47,7 +47,7 @@ class AgentFinish(BaseModel):
 
 class AgentOutputParser(BaseModel):
     @staticmethod
-    def load_json_output(message: BaseMessage) -> Dict[str, Any]:
+    def load_json_output(message: BaseMessage, llm) -> Dict[str, Any]:
         """If the message contains a json response, try to parse it into dictionary"""
         text = message.content
         clean_text = ""
@@ -55,9 +55,18 @@ class AgentOutputParser(BaseModel):
         try:
             clean_text = text[text.index("{") : text.rindex("}") + 1].strip()
             response = json.loads(clean_text)
-            print("Response: ", response)
         except Exception:
-            response = text
+            message = [
+                UserMessage(
+                    content=f"""Fix the following json into correct format
+                                ```json
+                                {clean_text}
+                                ```
+                                """
+                )
+            ]
+            full_output: Generation = llm.generate(message).generations[0]
+            response = json.loads(full_output.message.content)
 
         return response
 
@@ -66,7 +75,7 @@ class AgentOutputParser(BaseModel):
         """Parse text into agent action/finish."""
 
     def parse_clarification(
-        self, message: BaseMessage, agent_action: AgentAction
+        self, message: BaseMessage, agent_action: AgentAction, llm
     ) -> Union[AgentAction, AgentFinish]:
         """Parse clarification outputs"""
         return agent_action
