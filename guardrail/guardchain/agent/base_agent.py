@@ -163,11 +163,11 @@ class ConvoJSONOutputParser(AgentOutputParser):
         else:
             raise ValueError("Data is not in valid JSON format.")
         
-    def parse(self, message: BaseMessage, tool_names) -> Union[AgentAction, AgentFinish]:
+    def parse(self, message: BaseMessage, tool_names, llm) -> Union[AgentAction, AgentFinish]:
         if self.is_json(message.content):
             response = message.content
         else:
-            response = self.load_json_output(message)
+            response = self.load_json_output(message, llm)
             if not self.is_json(response):
                 response = self.ensure_json(response)
 
@@ -192,9 +192,9 @@ class ConvoJSONOutputParser(AgentOutputParser):
         )
 
     def parse_clarification(
-        self, message: BaseMessage, agent_action: AgentAction
+        self, message: BaseMessage, agent_action: AgentAction, llm
     ) -> Union[AgentAction, AgentFinish]:
-        response = self.load_json_output(message)
+        response = self.load_json_output(message, llm)
 
         has_arg_value = response.get("has_arg_value", "")
         clarifying_question = response.get("clarifying_question", "")

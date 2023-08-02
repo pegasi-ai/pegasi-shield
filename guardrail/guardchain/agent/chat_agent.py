@@ -137,7 +137,7 @@ class ChatAgent(BaseAgent):
         full_output: Generation = self.llm.generate(final_prompt, planning=True).generations[0]
         print("Full output", full_output)
         agent_output: Union[AgentAction, AgentFinish] = self.output_parser.parse(
-            full_output.message, tool_names
+            full_output.message, tool_names, llm=self.llm
         )
         print_with_color("done with tooling", Fore.CYAN)
 
@@ -175,7 +175,7 @@ class ChatAgent(BaseAgent):
             full_output: Generation = self.llm.generate(final_prompt).generations[0]
             print(f"Clarification outputs: {repr(full_output.message.content)}")
             return self.output_parser.parse_clarification(
-                full_output.message, agent_action=agent_action
+                full_output.message, agent_action=agent_action, llm=self.llm
             )
 
     def fix_action_input(self, tool: Tool, action: AgentAction, error: str) -> AgentAction:
@@ -185,7 +185,7 @@ class ChatAgent(BaseAgent):
         logger.info(f"\nFixing tool input prompt: {prompt}")
         messages = UserMessage(content=prompt)
         output = self.llm.generate([messages]).generations[0]
-        new_tool_inputs = self.output_parser.load_json_output(output.message)
+        new_tool_inputs = self.output_parser.load_json_output(output.message, self.llm)
 
         logger.info(f"\nFixed tool output: {new_tool_inputs}")
         new_action = AgentAction(tool=action.tool, tool_input=new_tool_inputs)
