@@ -1,11 +1,16 @@
-# 🛡️🔗 GuardChain
+# 🛡️Guardrail ML
 [![License](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 [![Python 3.7+](https://img.shields.io/badge/python-3.7+-blue.svg)](https://www.python.org/downloads/release/python-370/)
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
 
 ![plot](./static/images/guardrail_img.png)
 
-Guardchain is a lightweight toolkit for developers to evaluate, benchmark, and safeguard your AI agents and chains.
+Guardrail ML is toolkit for developers to safely bring AI from prototype to production. Our SDK helps build production-grade LLM applications quickly and reliably.
+
+## Benefits
+- 🚀build production-grade LLM applications quickly and reliably
+- 📝customize to your unique use case and automate workflows
+- 💸improve performance and reduce cost, and deploy with confidence
 
 ## Features 
 - 🛠️ evaluate and track prompts and LLM outputs with automated text and NLP metrics 
@@ -16,8 +21,9 @@ Guardchain is a lightweight toolkit for developers to evaluate, benchmark, and s
 [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/1KCn1HIeD3fQy8ecT74yHa3xgJZvdNvqL?usp=sharing)
 
 ## Installation 💻
+1. Get API Key
 
-To install guardchain, use the Python Package Index (PyPI) as follows:
+2. To install guardchain, use the Python Package Index (PyPI) as follows:
 
 ```
 pip install guardrail-ml
