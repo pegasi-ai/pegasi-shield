@@ -8,14 +8,14 @@
 Guardrail ML is toolkit for developers to safely bring AI from prototype to production. Our SDK helps build production-grade LLM applications quickly and reliably.
 
 ## Benefits
-- 🚀build production-grade LLM applications quickly and reliably
-- 📝customize to your unique use case and automate workflows
-- 💸improve performance and reduce cost, and deploy with confidence
+- 🚀build production-grade LLM applications reliably and safely
+- 📝drive faster experiments and confidently update AI changes
+- 💸track cost, improve performance and deploy with confidence
 
 ## Features 
 - 🛠️ evaluate and track prompts and LLM outputs with automated text and NLP metrics 
-- 🤖 benchmark domain-specific tasks with automated agent simulated conversations
-- 🛡️ safeguard LLMs with our customizable firewall and enforce policies with guardrails 
+- 🤖 reduce and measure ungrounded additions (hallucinations) with tools
+- 🛡️ monitor and benchmark agent behaviors, automated responsible AI metrics
 
 ## Quickstart 
 [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/1KCn1HIeD3fQy8ecT74yHa3xgJZvdNvqL?usp=sharing)
@@ -60,10 +60,3 @@ create_dataset(model="OpenAssistant/falcon-7b-sft-mix-2000",
 Fine-Tuning Dolly 2.0 with LoRA: [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/1n5U13L0Bzhs32QO_bls5jwuZR62GPSwE?usp=sharing)
 
 Inferencing Dolly 2.0: [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/1A8Prplbjr16hy9eGfWd3-r34FOuccB2c?usp=sharing)
-
-### Related AI Papers & Resources:
-- [Universal and Transferable Adversarial Attacks
-on Aligned Language Models](https://llm-attacks.org/zou2023universal.pdf)
-- [OWASP Top 10 for LLM](https://owasp.org/www-project-top-10-for-large-language-model-applications/assets/PDF/OWASP-Top-10-for-LLMs-2023-v09.pdf)
-- [Reflexion: Language Agents with Verbal Reinforcement Learning](https://arxiv.org/abs/2303.11366)
-- [FacTool: Factuality Detection in Generative AI](https://arxiv.org/abs/2307.13528)
