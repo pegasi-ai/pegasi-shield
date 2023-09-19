@@ -32,31 +32,6 @@ Guardrail ML is an alignment toolkit to use LLMs safely and securely. Our firewa
 pip install guardrail-ml
 ```
 
-## Usage 🛡️🔗
-
-```python
-from guardrail.client import run_metrics
-from guardrail.client import run_simple_metrics
-from guardrail.client import create_dataset
-
-# Output/Prompt Metrics
-run_metrics(output="Guardrail is an open-source toolkit for building domain-specific language models with confidence. From domain-specific dataset creation and custom     evaluations to safeguarding and redteaming aligned with policies, our tools accelerates your LLM workflows to systematically derisk deployment.",
-            prompt="What is guardrail-ml?",
-            model_uri="llama-v2-guanaco")
-
-# View Logs
-con = sqlite3.connect("logs.db")
-df = pd.read_sql_query("SELECT * from logs", con)
-df.tail(20)
-
-# Generate Dataset from PDF
-create_dataset(model="OpenAssistant/falcon-7b-sft-mix-2000",
-               tokenizer="OpenAssistant/falcon-7b-sft-mix-2000",
-               file_path="example-docs/Medicare Appeals Paper FINAL.pdf",
-               output_path="./output.json",
-               load_in_4bit=True)
-```
-
 ## More Colab Notebooks
 4-bit QLoRA of `llama-v2-7b` with `dolly-15k` (07/21/23): [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/134o_cXcMe_lsvl15ZE_4Y75Kstepsntu?usp=sharing)
 
