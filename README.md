@@ -2,10 +2,13 @@
 [![License](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 [![Python 3.7+](https://img.shields.io/badge/python-3.7+-blue.svg)](https://www.python.org/downloads/release/python-370/)
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
+[![PyPI - Python Version](https://img.shields.io/pypi/v/llm-guard)](https://pypi.org/project/guardrail-ml)
+[![Downloads](https://static.pepy.tech/badge/guardrail-ml)](https://pepy.tech/project/guardrail-ml)
+[![Downloads](https://static.pepy.tech/badge/guardrail-ml/month)](https://pepy.tech/project/guardrail-ml)
 
 ![plot](./static/images/guardrail_img.png)
 
-Guardrail ML is toolkit for developers to safely bring AI from prototype to production. Our SDK helps build production-grade LLM applications quickly and reliably.
+Guardrail ML is an alignment toolkit to use LLMs safely and securely. Our firewall scans prompts and LLM behaviors for risks to bring your AI app from prototype to production with confidence.
 
 ## Benefits
 - 🚀build production-grade LLM applications reliably and safely
