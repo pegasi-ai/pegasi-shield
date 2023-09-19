@@ -11,14 +11,14 @@
 Guardrail ML is an alignment toolkit to use LLMs safely and securely. Our firewall scans prompts and LLM behaviors for risks to bring your AI app from prototype to production with confidence.
 
 ## Benefits
-- 🚀build production-grade LLM applications reliably and safely
-- 📝drive faster experiments and confidently update AI changes
-- 💸track cost, improve performance and deploy with confidence
+- 🚀mitigate LLM security and safety risks 
+- 📝customize and ensure LLM behaviors are safe and secure
+- 💸monitor incidents, costs, and responsible AI metrics 
 
 ## Features 
-- 🛠️ evaluate and track prompts and LLM outputs with automated text and NLP metrics 
+- 🛠️ firewall that safeguards against CVEs and improves with each attack
 - 🤖 reduce and measure ungrounded additions (hallucinations) with tools
-- 🛡️ monitor and benchmark agent behaviors, automated responsible AI metrics
+- 🛡️ multi-layered defense with heuristic detectors, LLM-based, vector DB
 
 ## Quickstart 
 [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/1KCn1HIeD3fQy8ecT74yHa3xgJZvdNvqL?usp=sharing)
