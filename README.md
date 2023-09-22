@@ -24,7 +24,7 @@ Guardrail ML is an alignment toolkit to use LLMs safely and securely. Our firewa
 [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/1eUm6tkEl9YvzgObwWDvt6pOnWgnReIug?usp=sharing)
 
 ## Installation 💻
-1. Get API Key: app.useguardrail.com
+1. [Guardrail API Key](app.useguardrail.com) 
 
 2. To install guardrail, use the Python Package Index (PyPI) as follows:
 
