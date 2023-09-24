@@ -33,6 +33,24 @@ pip install guardrail-ml
 
 ![plot](./static/images/quickstart.png)
 
+## Roadmap
+- [x] Toxicity Detector
+- [x] Regex Detector 
+- [x] Stop Patterns Detector 
+- [x] Malware URL Detector 
+- [x] PII Anonymize
+- [x] Secrets
+- [x] DoS Tokens
+- [x] Harmful Detector 
+- [x] Factuality / Hallucinations 
+- [x] Contradictions
+- [x] Text Quality
+- [x] Prompt Injections
+- [x] OpenAI Completion
+- [ ] LangChain
+- [ ] LlamaIndex
+- [ ] Cohere
+- [ ] HuggingFace
 
 ## More Colab Notebooks
 
