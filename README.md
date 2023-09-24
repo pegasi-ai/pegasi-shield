@@ -6,7 +6,7 @@
 [![Downloads](https://static.pepy.tech/badge/guardrail-ml)](https://pepy.tech/project/guardrail-ml)
 [![Downloads](https://static.pepy.tech/badge/guardrail-ml/month)](https://pepy.tech/project/guardrail-ml)
 
-![plot](./static/images/guardrail_v2.png)
+![plot](./static/images/guardrail_v4.png)
 
 Guardrail ML is an alignment toolkit to use LLMs safely and securely. Our firewall scans prompts and LLM behaviors for risks to bring your AI app from prototype to production with confidence.
 
@@ -24,13 +24,15 @@ Guardrail ML is an alignment toolkit to use LLMs safely and securely. Our firewa
 [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/1eUm6tkEl9YvzgObwWDvt6pOnWgnReIug?usp=sharing)
 
 ## Installation 💻
-1. [Guardrail API Key](app.useguardrail.com) 
+1. [Guardrail API Key](app.useguardrail.com) and set `env` variable as `GUARDRAIL_API_KEY` 
 
 2. To install guardrail, use the Python Package Index (PyPI) as follows:
-
 ```
 pip install guardrail-ml
 ```
+
+![plot](./static/images/quickstart.png)
+
 
 ## More Colab Notebooks
 
