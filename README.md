@@ -34,6 +34,8 @@ pip install guardrail-ml
 ![plot](./static/images/quickstart.png)
 
 ## Roadmap
+
+**Firewall**
 - [x] Toxicity Detector
 - [x] Regex Detector 
 - [x] Stop Patterns Detector 
@@ -46,6 +48,10 @@ pip install guardrail-ml
 - [x] Contradictions
 - [x] Text Quality
 - [x] Prompt Injections
+- [ ] Adversarial Prompt Generation
+- [ ] Attack Signature
+
+**Integrations**
 - [x] OpenAI Completion
 - [ ] LangChain
 - [ ] LlamaIndex
