@@ -4,7 +4,6 @@
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
 [![PyPI - Python Version](https://img.shields.io/pypi/v/llm-guard)](https://pypi.org/project/guardrail-ml)
 [![Downloads](https://static.pepy.tech/badge/guardrail-ml)](https://pepy.tech/project/guardrail-ml)
-[![Downloads](https://static.pepy.tech/badge/guardrail-ml/month)](https://pepy.tech/project/guardrail-ml)
 
 ![plot](./static/images/guardrail_v5.png)
 
@@ -36,6 +35,9 @@ pip install guardrail-ml
 ## Roadmap
 
 **Firewall**
+- [x] Prompt Injections
+- [x] Factual Consistency
+- [x] Factuality Tool
 - [x] Toxicity Detector
 - [x] Regex Detector 
 - [x] Stop Patterns Detector 
@@ -44,16 +46,17 @@ pip install guardrail-ml
 - [x] Secrets
 - [x] DoS Tokens
 - [x] Harmful Detector 
-- [x] Factuality / Hallucinations 
+- [x] Relevance
 - [x] Contradictions
 - [x] Text Quality
-- [x] Prompt Injections
+- [x] Language
+- [x] Bias
 - [ ] Adversarial Prompt Generation
 - [ ] Attack Signature
 
 **Integrations**
 - [x] OpenAI Completion
-- [ ] LangChain
+- [x] LangChain
 - [ ] LlamaIndex
 - [ ] Cohere
 - [ ] HuggingFace
