@@ -8,5 +8,5 @@
 ![plot](./static/images/trex.png)
 
 
-[May 2024 Update] Optimize your RAG pipelines for accuracy with T-RAGS (Trustworthy Retrieval Augmented Generation with Safeguards). Named aptly after T-Rex (🦖). This repo was formally Guardrail ML, a security and alignment toolkit to detect unwanted inputs and LLM outputs. More to come.
+[May 2024 Update] Optimize your RAG pipelines for accuracy with T-RAGS (Trustworthy Retrieval Augmented Generation with Safeguards). Named aptly after T-Rex (🦖) and powered by knowledge graphs. This repo was formally Guardrail ML, a security and alignment toolkit to detect unwanted inputs and LLM outputs. More to come.
 
