@@ -18,6 +18,6 @@ Our Shield wraps your GenAI apps with a protective layer, safeguarding malicious
 - 💸 monitor incidents, costs, and responsible AI metrics 
 
 ## Features 
-- 🛠️ shield that safeguards against CVEs and improves with each attack
+- 🛠️ shield that safeguards against costly risks like toxicity, bias, PI
 - 🤖 reduce and measure ungrounded additions (hallucinations) with tools
 - 🛡️ multi-layered defense with heuristic detectors, LLM-based, vector DB
