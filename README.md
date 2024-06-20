@@ -5,7 +5,19 @@
 [![PyPI - Python Version](https://img.shields.io/pypi/v/llm-guard)](https://pypi.org/project/guardrail-ml)
 [![Downloads](https://static.pepy.tech/badge/guardrail-ml)](https://pepy.tech/project/guardrail-ml)
 
-[June 2024 Update] We're building tools to make LLMs accurate and secure, unlocking value faster. Our SDK is unifying a set of tools for your different trustworthy AI needs. 
+![plot](./static/images/safeguards-shield.png)
 
-[May 2024 Update] Optimize your RAG pipelines for accuracy with T-RAGS (Trustworthy Retrieval Augmented Generation with Safeguards). This repo was formally Guardrail ML, a security and alignment toolkit to detect unwanted inputs and LLM outputs. 
+Safeguards Shield is a developer toolkit to use LLMs safely and securely. Our Shield safeguards prompts and LLM interactions from costly risks to bring your AI app from prototype to production faster with confidence.
 
+Our Shield wraps your GenAI apps with a protective layer, safeguarding malicious inputs and filtering model outputs. Our comprehensive toolkit has 20+ out-of-the-box detectors for robust protection of your GenAI apps in workflow.
+
+
+## Benefits
+- 🚀 mitigate LLM reliability and safety risks 
+- 📝 customize and ensure LLM behaviors are safe and secure
+- 💸 monitor incidents, costs, and responsible AI metrics 
+
+## Features 
+- 🛠️ shield that safeguards against CVEs and improves with each attack
+- 🤖 reduce and measure ungrounded additions (hallucinations) with tools
+- 🛡️ multi-layered defense with heuristic detectors, LLM-based, vector DB
