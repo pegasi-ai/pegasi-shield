@@ -5,7 +5,7 @@
 [![PyPI - Python Version](https://img.shields.io/pypi/v/llm-guard)](https://pypi.org/project/guardrail-ml)
 [![Downloads](https://static.pepy.tech/badge/guardrail-ml)](https://pepy.tech/project/guardrail-ml)
 
-![plot](./static/images/safeguards-shield.png)
+![plot](./static/images/shield.png)
 
 Pegasi Shield is a developer toolkit to use LLMs safely and securely. Our Shield safeguards prompts and LLM interactions from costly risks to bring your AI app from prototype to production faster with confidence.
 
